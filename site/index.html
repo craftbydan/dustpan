@@ -111,6 +111,8 @@ header.top .wrap { display: flex; align-items: center; justify-content: space-be
 .brand img { width: 34px; height: 34px; }
 .nav { display: flex; align-items: center; gap: 18px; }
 .nav a:not(.btn) { font: 700 15px/1 var(--display); text-decoration: none; }
+.nav .gh { display: inline-flex; align-items: center; gap: 7px; }
+.nav .gh svg { width: 20px; height: 20px; flex: none; }
 @media (max-width: 520px) { .nav .hide-s { display: none; } }
 
 /* ——— Sweep scene ——— */
@@ -425,6 +427,7 @@ footer .wrap { display: flex; justify-content: space-between; gap: 18px; flex-wr
     <a class="brand" href="#"><img src="img/icon.png" alt="" width="34" height="34">Dustpan</a>
     <nav class="nav">
       <a href="how.html" class="hide-s">How it works</a>
+      <a class="gh" href="https://github.com/craftbydan/dustpan" aria-label="Dustpan on GitHub"><svg viewBox="0 0 16 16" aria-hidden="true" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg><span class="hide-s">GitHub</span></a>
       <a class="btn small primary" href="#get">Download</a>
     </nav>
   </div>
@@ -635,7 +638,7 @@ footer .wrap { display: flex; justify-content: space-between; gap: 18px; flex-wr
 <footer>
   <div class="wrap">
     <a class="brand" href="#"><img src="img/icon.png" alt="" width="34" height="34">Dustpan</a>
-    <p class="muted"><a href="how.html">How it works</a> · <a href="licenses/THIRD_PARTY_NOTICES.txt">Credits</a> · <a href="privacy.html">Privacy &amp; terms</a> · Made by Dan. Free under the MIT License, provided as is, without warranty. This page loads no trackers and no fonts from anyone else.</p>
+    <p class="muted"><a href="how.html">How it works</a> · <a href="licenses/THIRD_PARTY_NOTICES.txt">Credits</a> · <a href="https://github.com/craftbydan/dustpan">Source code on GitHub</a> · <a href="privacy.html">Privacy &amp; terms</a> · Made by Dan. Free under the MIT License, provided as is, without warranty. This page loads no trackers and no fonts from anyone else.</p>
   </div>
 </footer>
 
