@@ -93,6 +93,7 @@ site:
 	@echo "Upload $(DMG) to the $(VERSION) GitHub release (see $(RELEASE_PAGE)), then publish site/."
 
 # Publish the committed site/ folder to GitHub Pages (https://craftbydan.github.io/dustpan/).
+# The main site is Vercel (https://dustpan.craftbydan.com/), which deploys main by itself.
 # Pages serves the gh-pages branch, which is site/ split out of main's history.
 pages:
 	@git diff --quiet HEAD -- site || { echo "Commit your site/ changes first."; exit 1; }

@@ -12,7 +12,7 @@
 
 <p align="center">
   macOS 14+ · Apple Silicon and Intel · MIT License<br>
-  <a href="https://craftbydan.github.io/dustpan/"><b>Website</b></a> · <a href="https://github.com/craftbydan/dustpan/releases/latest"><b>Download</b></a>
+  <a href="https://dustpan.craftbydan.com/"><b>Website</b></a> · <a href="https://github.com/craftbydan/dustpan/releases/latest"><b>Download</b></a>
 </p>
 
 <p align="center">
