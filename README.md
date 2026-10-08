@@ -30,13 +30,13 @@ One click scans your Mac and groups what it finds into tiles you can open and re
 | **Apps** | Remove an app together with the files it left behind, and see which apps have updates. |
 | **Space map** | Find which folders are actually big, all the way down. |
 | **Clutter** | Duplicate files (matched by a hash of their whole contents) and big files you haven't opened in a while. |
-| **History** | Every move is logged. Put any item back where it came from. |
+| **History** | Every move is logged. Put an item back where it came from while it's still in the Trash. |
 
 It knows developer tools: Xcode and its simulators, npm, Yarn, pnpm, Cargo, Go, Gradle, pip, CocoaPods, JetBrains and more. It never lists your local AI models (Ollama, LM Studio) as junk.
 
 ## How it stays safe
 
-- **Trash first.** Dustpan moves files to the Trash and logs each move, so everything can be put back. The only permanent delete is *Empty Trash*, and that asks first and shows the size.
+- **Trash first.** Dustpan moves files to the Trash and logs each move, so anything can be put back until the Trash is emptied. The only permanent delete is *Empty Trash*, and that asks first and shows the size.
 - **Rules, not guesses.** Junk and Sweep look only in the places listed in the [rule book](Core/Rules/rules.json) (179 rules), and each rule says in plain words what those files are and what happens if they go. Space map and Clutter show what's big or duplicated; there, you decide what it is.
 - **Careful defaults.** Files changed in the last 7 days are never pre-selected, and nor are items marked *Review*.
 - **Protected places.** It never touches system folders, iCloud Drive, Mail, Photos libraries, Keychains or app databases.
