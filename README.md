@@ -11,7 +11,8 @@
 </p>
 
 <p align="center">
-  macOS 14+ · Apple Silicon and Intel · MIT License
+  macOS 14+ · Apple Silicon and Intel · MIT License<br>
+  <a href="https://craftbydan.github.io/dustpan/"><b>Website</b></a> · <a href="https://github.com/craftbydan/dustpan/releases/latest"><b>Download</b></a>
 </p>
 
 <p align="center">
@@ -80,7 +81,8 @@ make run
 | `make lint` | Checks formatting with `swift-format`. |
 | `make install` | Release build copied to `/Applications`. |
 | `make dmg` | Builds the drag-to-install disk image in `dist/` (needs `brew install create-dmg`). |
-| `make site` | Copies the DMG, rules and licences into `site/` for the landing page. |
+| `make site` | Updates `site/` (rules, licences, download link, size and checksum) for a new release. |
+| `make pages` | Publishes the committed `site/` folder to GitHub Pages. |
 
 Builds are ad-hoc signed, so macOS forgets Full Disk Access after each rebuild. Grant it again in System Settings.
 
