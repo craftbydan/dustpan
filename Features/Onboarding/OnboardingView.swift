@@ -55,7 +55,7 @@ private struct WelcomeStep: View {
     var body: some View {
         StepHeading("Dustpan finds the space your Mac fills up on its own")
         Text(
-            "Caches, logs, old installers and build files pile up quietly. Dustpan finds them, says in plain words what each one is, and lets you choose what goes."
+            "Caches, logs, old installers and build files pile up quietly. Dustpan finds them, says what each kind is, and lets you choose what goes."
         )
         .textStyle(.body)
         .fixedSize(horizontal: false, vertical: true)

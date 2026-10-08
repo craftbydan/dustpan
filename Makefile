@@ -11,7 +11,7 @@ XCODEBUILD   := xcodebuild -project Dustpan.xcodeproj -scheme $(SCHEME) -destina
 APP          := $(DERIVED_DATA)/Build/Products/Debug/Dustpan.app
 LINT_PATHS   := App Core DesignSystem Features Tests
 
-.PHONY: all project build test lint format run clean install dmg site pages og
+.PHONY: all project build test lint format run clean install dmg site og
 
 all: build
 
@@ -90,16 +90,7 @@ site:
 		-e "s#(<span id=\"relSize\">)[^<]*#\1$$(stat -f %z $(DMG) | awk '{printf "%.1f MB", $$1/1e6}')#" \
 		site/index.html
 	@cat site/release.json
-	@echo "Upload $(DMG) to the $(VERSION) GitHub release (see $(RELEASE_PAGE)), then publish site/."
-
-# Publish the committed site/ folder to GitHub Pages (https://craftbydan.github.io/dustpan/).
-# The main site is Vercel (https://dustpan.craftbydan.com/), which deploys main by itself.
-# Pages serves the gh-pages branch, which is site/ split out of main's history.
-pages:
-	@git diff --quiet HEAD -- site || { echo "Commit your site/ changes first."; exit 1; }
-	git subtree split --prefix site -b gh-pages-build
-	git push origin gh-pages-build:gh-pages
-	git branch -D gh-pages-build
+	@echo "Upload $(DMG) to the $(VERSION) GitHub release (see $(RELEASE_PAGE)), then commit and push: Vercel publishes site/."
 
 # Link-preview image (site/og.png, 1200×630) rendered from Scripts/og/og.html with headless Chrome.
 CHROME ?= /Applications/Google Chrome.app/Contents/MacOS/Google Chrome

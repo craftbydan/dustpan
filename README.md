@@ -6,8 +6,8 @@
 
 <p align="center">
   <b>Clear the clutter. Keep the undo.</b><br>
-  A free, native macOS disk cleaner that explains every item in plain words<br>
-  and moves only what you approve to the Trash.
+  A free, native macOS disk cleaner that finds caches, build files and old installers,<br>
+  says why each kind is usually safe to remove, and moves only what you approve to the Trash.
 </p>
 
 <p align="center">
@@ -37,7 +37,7 @@ It knows developer tools: Xcode and its simulators, npm, Yarn, pnpm, Cargo, Go, 
 ## How it stays safe
 
 - **Trash first.** Dustpan moves files to the Trash and logs each move, so everything can be put back. The only permanent delete is *Empty Trash*, and that asks first and shows the size.
-- **A rule for every item.** Dustpan scans only the places in its [rule book](Core/Rules/rules.json) (179 rules), and each rule says in plain words what the files are and what happens if they go.
+- **Rules, not guesses.** Junk and Sweep look only in the places listed in the [rule book](Core/Rules/rules.json) (179 rules), and each rule says in plain words what those files are and what happens if they go. Space map and Clutter show what's big or duplicated; there, you decide what it is.
 - **Careful defaults.** Files changed in the last 7 days are never pre-selected, and nor are items marked *Review*.
 - **Protected places.** It never touches system folders, iCloud Drive, Mail, Photos libraries, Keychains or app databases.
 - **No tricks.** No "free RAM" button, no scare warnings, no claims that deleting caches makes your Mac faster. It deletes files to free space and says so.
@@ -81,8 +81,8 @@ make run
 | `make lint` | Checks formatting with `swift-format`. |
 | `make install` | Release build copied to `/Applications`. |
 | `make dmg` | Builds the drag-to-install disk image in `dist/` (needs `brew install create-dmg`). |
-| `make site` | Updates `site/` (rules, licences, download link, size and checksum) for a new release. |
-| `make pages` | Publishes the committed `site/` folder to GitHub Pages. |
+| `make site` | Updates `site/` (rules, licences, download link, size and checksum) for a new release. Pushing to `main` publishes it at dustpan.craftbydan.com. |
+| `make og` | Re-renders the link-preview image `site/og.png` from `Scripts/og/og.html`. |
 
 Builds are ad-hoc signed, so macOS forgets Full Disk Access after each rebuild. Grant it again in System Settings.
 
