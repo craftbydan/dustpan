@@ -11,7 +11,7 @@ XCODEBUILD   := xcodebuild -project Dustpan.xcodeproj -scheme $(SCHEME) -destina
 APP          := $(DERIVED_DATA)/Build/Products/Debug/Dustpan.app
 LINT_PATHS   := App Core DesignSystem Features Tests
 
-.PHONY: all project build test lint format run clean install dmg site
+.PHONY: all project build test lint format run clean install dmg site pages
 
 all: build
 
@@ -91,6 +91,14 @@ site:
 		site/index.html
 	@cat site/release.json
 	@echo "Upload $(DMG) to the $(VERSION) GitHub release (see $(RELEASE_PAGE)), then publish site/."
+
+# Publish the committed site/ folder to GitHub Pages (https://craftbydan.github.io/dustpan/).
+# Pages serves the gh-pages branch, which is site/ split out of main's history.
+pages:
+	@git diff --quiet HEAD -- site || { echo "Commit your site/ changes first."; exit 1; }
+	git subtree split --prefix site -b gh-pages-build
+	git push origin gh-pages-build:gh-pages
+	git branch -D gh-pages-build
 
 clean:
 	rm -rf $(DERIVED_DATA)
