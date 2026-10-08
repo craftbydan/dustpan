@@ -1,0 +1,36 @@
+# macOS
+.DS_Store
+
+# Xcode
+build/
+DerivedData/
+*.xcuserstate
+xcuserdata/
+*.xcscmblueprint
+*.xccheckout
+*.moved-aside
+*.hmap
+*.ipa
+*.dSYM.zip
+*.dSYM
+
+# SwiftPM
+.build/
+.swiftpm/
+
+# Local secrets / config
+Config.xcconfig
+
+# Release output
+*.dmg
+dist/
+
+# Private planning notes (kept on this Mac only)
+/Dustpan — a *blueprint.md
+/Dustpan — Mac app screens.pdf
+/CLAUDE.md
+/prompts.md
+/PROGRESS.md
+/docs/qa-notes.md
+/.claude/
+/docs/screenshots/

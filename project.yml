@@ -1,0 +1,169 @@
+# Source of truth for Dustpan.xcodeproj. Regenerate with `make project` after editing.
+name: Dustpan
+
+options:
+  bundleIdPrefix: app.dustpan
+  deploymentTarget:
+    macOS: "14.0"
+  createIntermediateGroups: true
+  groupSortPosition: top
+
+configFiles:
+  Debug: Config.xcconfig
+  Release: Config.xcconfig
+
+settings:
+  base:
+    SWIFT_VERSION: "6.0"
+    SWIFT_STRICT_CONCURRENCY: complete
+    MACOSX_DEPLOYMENT_TARGET: "14.0"
+    ENABLE_HARDENED_RUNTIME: YES
+    ENABLE_APP_SANDBOX: NO
+    ENABLE_USER_SCRIPT_SANDBOXING: YES
+    ENABLE_MODULE_VERIFIER: NO
+    DEAD_CODE_STRIPPING: YES
+    GCC_TREAT_WARNINGS_AS_ERRORS: NO
+    SWIFT_TREAT_WARNINGS_AS_ERRORS: NO
+    MARKETING_VERSION: "0.1.0"
+    CURRENT_PROJECT_VERSION: "1"
+
+packages:
+  GRDB:
+    url: https://github.com/groue/GRDB.swift
+    from: 7.11.1
+  PermissionsKit:
+    # Tag 1.0.6 has no Package.swift; this is the commit right after 1.0.6 that adds SwiftPM support
+    # (no source changes). See PROGRESS.md → Deviations.
+    url: https://github.com/MacPaw/PermissionsKit
+    revision: 527713f054cf34f1e22c663e9a5c281724247067
+  swift-collections:
+    url: https://github.com/apple/swift-collections
+    from: 1.7.0
+  MenuBarExtraAccess:
+    url: https://github.com/orchetect/MenuBarExtraAccess
+    exactVersion: 1.3.1
+  LaunchAtLogin:
+    # The tag is `v1.1.0`; SwiftPM reads it as version 1.1.0.
+    url: https://github.com/sindresorhus/LaunchAtLogin-Modern
+    exactVersion: 1.1.0
+
+targets:
+  CXXHash:
+    type: library.static
+    platform: macOS
+    sources:
+      - path: Core/Duplicates/CXXHash
+        excludes:
+          - LICENSE
+    settings:
+      base:
+        PRODUCT_NAME: CXXHash
+        SKIP_INSTALL: YES
+        # Compile xxhash.c textually so XXH_IMPLEMENTATION takes effect (not via the CXXHash clang module).
+        CLANG_ENABLE_MODULES: NO
+
+  CDiskWalk:
+    type: library.static
+    platform: macOS
+    sources:
+      - path: Core/Scanning/CDiskWalk
+    settings:
+      base:
+        PRODUCT_NAME: CDiskWalk
+        SKIP_INSTALL: YES
+        CLANG_ENABLE_MODULES: NO
+
+  Dustpan:
+    type: application
+    platform: macOS
+    sources:
+      - path: App
+      - path: Core
+        excludes:
+          - Duplicates/CXXHash/**
+          - Scanning/CDiskWalk/**
+          - Rules/RULES_ATTRIBUTION.md
+      - path: DesignSystem
+      - path: Features
+      # Licence texts shipped inside the app (MIT/BSD/Apache require them in every copy).
+      # Settings › About opens them.
+      - path: LICENSE
+        buildPhase: resources
+      - path: THIRD_PARTY_NOTICES.md
+        buildPhase: resources
+      - path: Core/Rules/RULES_ATTRIBUTION.md
+        buildPhase: resources
+    dependencies:
+      - target: CXXHash
+      - target: CDiskWalk
+      - package: GRDB
+        product: GRDB
+      - package: PermissionsKit
+        product: PermissionsKit
+      - package: swift-collections
+        product: Collections
+      - package: MenuBarExtraAccess
+        product: MenuBarExtraAccess
+      - package: LaunchAtLogin
+        product: LaunchAtLogin
+    info:
+      path: App/Info.plist
+      properties:
+        CFBundleDisplayName: Dustpan
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
+        LSApplicationCategoryType: public.app-category.utilities
+        LSMinimumSystemVersion: $(MACOSX_DEPLOYMENT_TARGET)
+        NSHumanReadableCopyright: "Copyright © 2026 Dan. MIT License. Provided as is, without warranty."
+    entitlements:
+      path: App/Dustpan.entitlements
+      properties:
+        com.apple.security.app-sandbox: false
+    settings:
+      base:
+        PRODUCT_NAME: Dustpan
+        PRODUCT_BUNDLE_IDENTIFIER: app.dustpan.Dustpan
+        SWIFT_INCLUDE_PATHS: $(SRCROOT)/Core/Duplicates/CXXHash/include $(SRCROOT)/Core/Scanning/CDiskWalk/include
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        COMBINE_HIDPI_IMAGES: YES
+        LD_RUNPATH_SEARCH_PATHS: "$(inherited) @executable_path/../Frameworks"
+
+  DustpanTests:
+    type: bundle.unit-test
+    platform: macOS
+    sources:
+      - path: Tests/DustpanTests
+    dependencies:
+      - target: Dustpan
+      - package: GRDB
+        product: GRDB
+        embed: false
+        link: false
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: app.dustpan.DustpanTests
+        SWIFT_INCLUDE_PATHS: $(SRCROOT)/Core/Duplicates/CXXHash/include $(SRCROOT)/Core/Scanning/CDiskWalk/include
+        TEST_HOST: $(BUILT_PRODUCTS_DIR)/Dustpan.app/Contents/MacOS/Dustpan
+        BUNDLE_LOADER: $(TEST_HOST)
+        GENERATE_INFOPLIST_FILE: YES
+
+schemes:
+  Dustpan:
+    build:
+      targets:
+        Dustpan: all
+        DustpanTests: [test]
+    run:
+      config: Debug
+      # Diagnostics (Prompt 11): Main Thread Checker on, stopping at each issue. Scanning/cleaning
+      # I/O on the main thread is caught separately by `assertNotMainThread()` in DEBUG builds.
+      disableMainThreadChecker: false
+      stopOnEveryMainThreadCheckerIssue: true
+    test:
+      config: Debug
+      disableMainThreadChecker: false
+      gatherCoverageData: false
+      targets:
+        - DustpanTests
+    archive:
+      config: Release

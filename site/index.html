@@ -1,0 +1,974 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dustpan for Mac</title>
+<meta name="description" content="A free Mac disk cleaner that explains every file in plain words and moves only what you approve to the Trash.">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="preload" href="fonts/archivo.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+@font-face {
+  font-family: "Archivo";
+  src: url("fonts/archivo.woff2") format("woff2");
+  font-weight: 100 900;
+  font-display: swap;
+}
+
+/* Tokens — same values as DesignSystem/Colors.xcassets */
+:root {
+  --paper: #F6F1E7;
+  --surface: #FBF8F1;
+  --ink: #141210;
+  --muted: #6B6459;
+  --line: rgba(20, 18, 16, .12);
+  --tomato: #FF4B2B;
+  --sun: #FFC21A;
+  --cobalt: #2648FF;
+  --mint: #1FCF8F;
+  --bubblegum: #FF7AC6;
+  --stone: #8C857A;
+  --ink-fixed: #141210;
+  --paper-fixed: #F6F1E7;
+  --outline: 2.5px;
+  --shadow: 4px 4px 0 var(--ink);
+  --r-s: 10px;
+  --r-m: 18px;
+  --r-l: 28px;
+  --display: "Archivo", ui-sans-serif, system-ui, sans-serif;
+  --body: ui-sans-serif, -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;
+  --mono: ui-monospace, "SF Mono", Menlo, monospace;
+  --gutter: clamp(16px, 4vw, 40px);
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #17140F;
+    --surface: #201C16;
+    --ink: #F6F1E7;
+    --muted: #8C857A;
+    --line: rgba(246, 241, 231, .14);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #17140F;
+  --surface: #201C16;
+  --ink: #F6F1E7;
+  --muted: #8C857A;
+  --line: rgba(246, 241, 231, .14);
+  color-scheme: dark;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font: 16px/1.55 var(--body);
+  overflow-x: clip;
+}
+img { max-width: 100%; height: auto; display: block; }
+a { color: inherit; }
+h1, h2, h3 { font-family: var(--display); margin: 0; line-height: 1; letter-spacing: -0.02em; }
+p { margin: 0; }
+:focus-visible { outline: 3px solid var(--cobalt); outline-offset: 3px; border-radius: 6px; }
+.wrap { width: 100%; max-width: 1180px; margin: 0 auto; padding: 0 var(--gutter); }
+.muted { color: var(--muted); }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* Buttons — InkButton */
+.btn {
+  display: inline-flex; align-items: center; gap: 10px;
+  font: 700 16px/1 var(--display);
+  padding: 15px 22px;
+  border: var(--outline) solid var(--ink);
+  border-radius: var(--r-m);
+  box-shadow: var(--shadow);
+  background: var(--surface);
+  color: var(--ink);
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform .08s, box-shadow .08s;
+}
+.btn:active { transform: translate(2px, 2px); box-shadow: 2px 2px 0 var(--ink); }
+.btn.primary { background: var(--tomato); color: var(--ink-fixed); }
+.btn.small { padding: 10px 14px; font-size: 14px; border-radius: 14px; }
+.btn svg { width: 18px; height: 18px; flex: none; }
+
+/* Header */
+header.top {
+  position: fixed; inset: 0 0 auto 0; z-index: 30;
+  padding: 14px 0;
+  transition: background .2s, border-color .2s;
+  border-bottom: var(--outline) solid transparent;
+}
+header.top.solid { background: var(--paper); border-bottom-color: var(--ink); }
+header.top .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.brand { display: flex; align-items: center; gap: 10px; text-decoration: none; font: 900 22px/1 var(--display); letter-spacing: -0.02em; }
+.brand img { width: 34px; height: 34px; }
+.nav { display: flex; align-items: center; gap: 18px; }
+.nav a:not(.btn) { font: 700 15px/1 var(--display); text-decoration: none; }
+@media (max-width: 520px) { .nav .hide-s { display: none; } }
+
+/* ——— Sweep scene ——— */
+.sweep { position: relative; height: 340vh; }
+.sweep-sticky {
+  position: sticky; top: 0;
+  height: 100vh; height: 100svh;
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+  align-items: center;
+  gap: clamp(24px, 4vw, 64px);
+  padding: 88px var(--gutter) 32px;
+  max-width: 1180px; margin: 0 auto;
+}
+.intro .eyebrow {
+  display: inline-flex; align-items: center; gap: 8px;
+  font: 800 13px/1 var(--display); text-transform: uppercase; letter-spacing: .06em;
+  margin-bottom: 20px;
+}
+.dot { width: 12px; height: 12px; border: 2px solid var(--ink); border-radius: 4px; background: var(--sun); display: inline-block; }
+.intro h1 { font-size: clamp(2.4rem, 4.2vw, 4.4rem); font-weight: 900; overflow-wrap: break-word; }
+.intro h1 em { font-style: normal; background: var(--sun); color: var(--ink-fixed); padding: 0 .12em; border-radius: 10px; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
+.intro .lede { font-size: clamp(1.05rem, 1.4vw, 1.2rem); margin: 22px 0 28px; max-width: 30em; }
+.intro .ctas { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; }
+.scroll-hint { font: 700 14px/1.2 var(--display); display: inline-flex; gap: 8px; align-items: center; }
+.scroll-hint svg { width: 16px; animation: nudge 1.6s ease-in-out infinite; }
+@keyframes nudge { 50% { transform: translateY(4px); } }
+
+.stage {
+  position: relative;
+  height: min(100%, 640px);
+  min-height: 360px;
+  border: var(--outline) solid var(--ink);
+  border-radius: var(--r-l);
+  background:
+    radial-gradient(circle, var(--line) 1.2px, transparent 1.6px) 0 0 / 22px 22px,
+    var(--surface);
+  box-shadow: 6px 6px 0 var(--ink);
+  overflow: hidden;
+}
+.stage-top {
+  position: absolute; inset: 0 0 auto 0;
+  display: flex; align-items: flex-end; justify-content: space-between; gap: 16px;
+  padding: 18px 20px 14px;
+  border-bottom: var(--outline) solid var(--ink);
+  background: var(--paper);
+  z-index: 5;
+}
+.counter { font: 900 clamp(2rem, 4.2vw, 3.4rem)/.9 var(--display); letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
+.counter-label { font: 700 14px/1.2 var(--display); margin-top: 6px; }
+.disk { width: min(46%, 220px); font-size: 12px; color: var(--muted); }
+.disk-bar { height: 14px; border: 2px solid var(--ink); border-radius: 8px; overflow: hidden; background: var(--surface); margin-bottom: 6px; }
+.disk-used { height: 100%; background: var(--sun); border-right: 2px solid var(--ink); transition: none; }
+.disk-text { font-variant-numeric: tabular-nums; }
+
+.desk { position: absolute; inset: 0; }
+.card {
+  position: absolute; left: 0; top: 0;
+  width: clamp(132px, 15vw, 200px);
+  padding: 12px 14px 13px;
+  border: var(--outline) solid var(--ink-fixed);
+  border-radius: var(--r-m);
+  box-shadow: 4px 4px 0 var(--ink-fixed);
+  color: var(--ink-fixed);
+  will-change: transform, opacity;
+}
+.card b { display: block; font: 900 clamp(1.25rem, 2vw, 1.7rem)/1 var(--display); letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+.card span { display: block; font: 600 13px/1.25 var(--body); margin-top: 6px; }
+.card small { display: block; font: 12px/1.2 var(--mono); opacity: .75; margin-top: 3px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.t-sun { background: var(--sun); }
+.t-cobalt { background: var(--cobalt); color: var(--paper-fixed); }
+.t-bubblegum { background: var(--bubblegum); }
+.t-mint { background: var(--mint); }
+.t-stone { background: var(--stone); }
+.t-tomato { background: var(--tomato); }
+
+.bin { position: absolute; width: clamp(84px, 9vw, 118px); z-index: 4; }
+.bin svg { width: 100%; overflow: visible; display: block; }
+.bin .lid { transform-origin: 8% 92%; transform-box: fill-box; }
+.bin-badge {
+  position: absolute; top: 34%; left: 50%; transform: translateX(-50%);
+  font: 900 15px/1 var(--display); color: var(--ink-fixed);
+  background: var(--paper-fixed); border: 2px solid var(--ink-fixed); border-radius: 999px;
+  padding: 4px 8px; min-width: 30px; text-align: center; font-variant-numeric: tabular-nums;
+}
+.stage-caption {
+  position: absolute; left: 20px; bottom: 16px; right: 40%;
+  font: 700 14px/1.3 var(--display); z-index: 4;
+}
+.stage-caption span { background: var(--paper); border: 2px solid var(--ink); border-radius: 999px; padding: 6px 12px; display: inline-block; }
+.replay { display: none; }
+.done {
+  position: absolute; left: 0; right: 0; top: 50%; transform: translateY(-30%);
+  text-align: center; padding: 0 24px; opacity: 0; pointer-events: none; z-index: 2;
+}
+.done b { display: block; font: 900 clamp(2.2rem, 5vw, 3.6rem)/1 var(--display); letter-spacing: -0.03em; }
+.done span { display: block; margin-top: 10px; font-size: 15px; color: var(--muted); }
+
+/* ——— Sections ——— */
+section.block { padding: clamp(72px, 10vw, 128px) 0; position: relative; }
+.kicker { font: 800 13px/1 var(--display); text-transform: uppercase; letter-spacing: .06em; display: flex; align-items: center; gap: 8px; margin-bottom: 18px; }
+h2 { font-size: clamp(2rem, 4.4vw, 3.6rem); font-weight: 900; max-width: 16em; }
+.section-lede { font-size: 1.1rem; max-width: 36em; margin-top: 18px; }
+
+/* Sweepable sections */
+.sweepable { transition: transform .5s cubic-bezier(.5, 0, .75, 0), opacity .5s ease-in; transform-origin: 100% 100%; }
+.sweepable.going { transform: translate(30vw, 40vh) scale(.08) rotate(14deg); opacity: 0; }
+.sweepable.gone { display: none; }
+.sweep-me {
+  position: absolute; top: clamp(72px, 10vw, 128px); right: var(--gutter);
+  display: inline-flex; align-items: center; gap: 6px;
+  font: 700 13px/1 var(--display); color: var(--muted);
+  background: none; border: 2px dashed var(--line); border-radius: 999px;
+  padding: 8px 12px; cursor: pointer;
+}
+.sweep-me:hover { color: var(--ink); border-color: var(--ink); }
+.sweep-me svg { width: 14px; height: 14px; }
+
+/* Promise tiles — Tile */
+.tiles { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; margin-top: 48px; }
+.tile {
+  border: var(--outline) solid var(--ink-fixed);
+  border-radius: var(--r-l);
+  box-shadow: 6px 6px 0 var(--ink);
+  padding: 26px 24px 28px;
+  color: var(--ink-fixed);
+  display: flex; flex-direction: column; gap: 14px;
+}
+.tile h3 { font-size: clamp(1.6rem, 2.4vw, 2.1rem); font-weight: 900; }
+.tile p { font-size: 15.5px; }
+.tile ul { margin: 4px 0 0; padding: 0; list-style: none; display: grid; gap: 6px; font-size: 14.5px; }
+.tile li::before { content: "→ "; font-weight: 700; }
+.tile .glyph { width: 52px; height: 52px; border: 2.5px solid var(--ink-fixed); border-radius: 14px; background: var(--paper-fixed); display: grid; place-items: center; }
+.tile .glyph svg { width: 28px; height: 28px; }
+
+/* Rules explorer */
+.explorer { margin-top: 44px; border: var(--outline) solid var(--ink); border-radius: var(--r-l); box-shadow: 6px 6px 0 var(--ink); background: var(--surface); overflow: hidden; }
+.tabs { display: flex; gap: 8px; padding: 14px; border-bottom: var(--outline) solid var(--ink); background: var(--paper); overflow-x: auto; scrollbar-width: none; }
+.tabs::-webkit-scrollbar { display: none; }
+.tab {
+  flex: none; display: inline-flex; align-items: center; gap: 8px;
+  font: 700 14px/1 var(--display); color: var(--ink);
+  padding: 10px 13px; border-radius: 12px; border: 2px solid transparent; background: none; cursor: pointer;
+}
+.tab .dot { width: 11px; height: 11px; }
+.tab[aria-selected="true"] { border-color: var(--ink); background: var(--surface); box-shadow: 3px 3px 0 var(--ink); }
+.tab .n { color: var(--muted); font-weight: 600; font-variant-numeric: tabular-nums; }
+.rules { list-style: none; margin: 0; padding: 0; }
+.rule { border-bottom: 1px solid var(--line); }
+.rule:last-child { border-bottom: 0; }
+.rule button {
+  width: 100%; display: grid; grid-template-columns: 26px minmax(0, 1fr) auto; gap: 14px; align-items: center;
+  padding: 14px 18px; background: none; border: 0; color: inherit; text-align: left; cursor: pointer; font: inherit;
+}
+.rule button:hover { background: var(--line); }
+.check { width: 24px; height: 24px; border: 2.5px solid var(--ink); border-radius: 7px; display: grid; place-items: center; }
+.check.on { background: var(--tomato); }
+.check svg { width: 14px; height: 14px; }
+.rule .name { display: block; font: 700 16px/1.25 var(--body); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.rule .path { display: block; font: 12.5px/1.3 var(--mono); color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-top: 2px; }
+.pill {
+  display: inline-flex; align-items: center; gap: 5px;
+  font: 800 12px/1 var(--display); color: var(--ink-fixed);
+  padding: 6px 9px; border: 2px solid var(--ink-fixed); border-radius: 999px; white-space: nowrap;
+}
+.pill.safe { background: var(--mint); }
+.pill.review { background: var(--sun); }
+.pill.never { background: var(--stone); }
+.why {
+  display: none;
+  margin: -4px 18px 16px 58px;
+  padding: 14px 16px;
+  border-left: 4px solid var(--ink);
+  background: var(--paper);
+  border-radius: 0 12px 12px 0;
+  font-size: 15.5px;
+}
+.why .meta { display: block; margin-top: 8px; font: 12.5px/1.4 var(--mono); color: var(--muted); }
+.rule.open .why { display: block; }
+.rule.open button { background: var(--line); }
+.explorer-foot { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; padding: 14px 18px; border-top: var(--outline) solid var(--ink); background: var(--paper); font-size: 14px; }
+
+/* Inside the app */
+.window {
+  margin-top: 48px;
+  border: var(--outline) solid var(--ink); border-radius: 16px; overflow: hidden;
+  box-shadow: 8px 8px 0 var(--ink); background: var(--paper);
+}
+.features { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px 32px; margin-top: 48px; }
+.feature h3 { font-size: 1.35rem; font-weight: 800; display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+.feature .dot { width: 16px; height: 16px; border-radius: 5px; }
+
+/* Don't list */
+.donts { list-style: none; padding: 0; margin: 40px 0 0; display: grid; gap: 4px; }
+.donts li {
+  font: 900 clamp(1.7rem, 4.6vw, 3.4rem)/1.15 var(--display); letter-spacing: -0.02em;
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 18px;
+}
+.donts .x { position: relative; color: var(--muted); }
+.donts .x::after {
+  content: ""; position: absolute; left: -2%; top: 52%; height: .12em; width: 0;
+  background: var(--tomato); border-radius: 4px; transform: rotate(-2deg);
+  transition: width .5s cubic-bezier(.2, .8, .2, 1);
+}
+.donts li.struck .x::after { width: 104%; }
+.donts .instead { font: 500 15px/1.4 var(--body); color: var(--ink); max-width: 30em; opacity: 0; transition: opacity .4s .35s; }
+.donts li.struck .instead { opacity: 1; }
+
+/* Receipt + download */
+.get { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: clamp(28px, 5vw, 72px); align-items: start; margin-top: 48px; }
+.receipt {
+  font: 14px/1.6 var(--mono);
+  color: var(--ink-fixed);
+  background: var(--paper-fixed);
+  padding: 28px 24px 40px;
+  border: var(--outline) solid var(--ink);
+  border-bottom: 0;
+  transform: rotate(-1.5deg);
+  position: relative;
+  box-shadow: 6px 6px 0 var(--ink);
+  -webkit-mask: conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) 50% / 22px 100%;
+          mask: conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) 50% / 22px 100%;
+}
+.receipt h3 { font: 900 22px/1 var(--display); text-align: center; letter-spacing: .02em; }
+.receipt .c { text-align: center; color: #6B6459; }
+.receipt hr { border: 0; border-top: 2px dashed var(--ink-fixed); margin: 14px 0; }
+.receipt .row { display: flex; justify-content: space-between; gap: 12px; }
+.receipt .row span:first-child { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.receipt .total { font-weight: 700; font-size: 16px; }
+
+.download { border: var(--outline) solid var(--ink); border-radius: var(--r-l); box-shadow: 6px 6px 0 var(--ink); background: var(--surface); padding: clamp(22px, 3vw, 34px); }
+.download .head { display: flex; gap: 18px; align-items: center; margin-bottom: 22px; }
+.download .head img { width: 72px; height: 72px; }
+.download h3 { font-size: 1.9rem; font-weight: 900; }
+.download .meta { font-size: 14px; color: var(--muted); margin-top: 6px; }
+.download .btn.primary { width: 100%; justify-content: center; font-size: 18px; padding: 18px 22px; }
+.steps { margin: 26px 0 0; padding: 0; list-style: none; counter-reset: s; display: grid; gap: 14px; }
+.steps li { counter-increment: s; display: grid; grid-template-columns: 30px minmax(0, 1fr); gap: 12px; font-size: 15px; }
+.steps li::before {
+  content: counter(s); width: 28px; height: 28px; display: grid; place-items: center;
+  font: 900 14px/1 var(--display); border: 2px solid var(--ink); border-radius: 9px; background: var(--sun); color: var(--ink-fixed);
+}
+.steps b { font-weight: 700; }
+.note { margin-top: 22px; padding: 14px 16px; border: 2px dashed var(--ink); border-radius: 14px; font-size: 14px; }
+.sha { margin-top: 18px; font-size: 13px; }
+.sha-row { display: flex; gap: 8px; margin-top: 6px; align-items: stretch; }
+.sha code { flex: 1; min-width: 0; font: 12.5px/1.4 var(--mono); padding: 10px 12px; border: 2px solid var(--ink); border-radius: 10px; background: var(--paper); overflow-wrap: anywhere; }
+.sha .cmd { display: block; margin-top: 8px; font: 12.5px/1.4 var(--mono); color: var(--muted); overflow-wrap: anywhere; }
+
+footer { border-top: var(--outline) solid var(--ink); padding: 36px 0 48px; font-size: 14px; }
+footer .wrap { display: flex; justify-content: space-between; gap: 18px; flex-wrap: wrap; align-items: center; }
+
+/* Page Trash (swept sections) */
+.page-trash { position: fixed; right: 18px; bottom: 18px; z-index: 40; display: none; }
+.page-trash.show { display: block; }
+.page-trash > .btn { background: var(--stone); color: var(--ink-fixed); }
+.page-trash .bump { animation: bump .4s; }
+@keyframes bump { 40% { transform: scale(1.12) rotate(-6deg); } }
+.trash-panel {
+  position: absolute; right: 0; bottom: calc(100% + 12px); width: min(320px, calc(100vw - 36px));
+  border: var(--outline) solid var(--ink); border-radius: var(--r-m); box-shadow: var(--shadow); background: var(--surface);
+  padding: 16px; display: none;
+}
+.trash-panel.open { display: block; }
+.trash-panel h4 { margin: 0 0 4px; font: 800 16px/1.2 var(--display); }
+.trash-panel ul { list-style: none; margin: 12px 0 0; padding: 0; display: grid; gap: 8px; }
+.trash-panel li { display: flex; justify-content: space-between; align-items: center; gap: 10px; font-weight: 600; font-size: 14px; }
+
+/* ——— Small screens ——— */
+@media (max-width: 860px) {
+  .sweep-sticky { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto minmax(0, 1fr); align-items: stretch; gap: 18px; padding-top: 76px; padding-bottom: 20px; }
+  .intro .eyebrow { margin-bottom: 12px; }
+  .intro h1 { font-size: clamp(2rem, 8.6vw, 3rem); }
+  .intro .lede { display: none; }
+  .intro .ctas { margin-top: 16px; }
+  .stage { height: auto; min-height: 0; }
+  .tiles, .features { grid-template-columns: minmax(0, 1fr); }
+  .get { grid-template-columns: minmax(0, 1fr); }
+  .receipt { transform: rotate(-1deg); order: 1; }
+  .sweep-me { position: static; margin-bottom: 20px; }
+  .stage-caption { left: 12px; bottom: 12px; right: 30%; font-size: 12.5px; }
+  .card { width: 112px; padding: 9px 10px 10px; border-radius: 14px; box-shadow: 3px 3px 0 var(--ink-fixed); }
+  .card b { font-size: 1.15rem; }
+  .card span { font-size: 12px; margin-top: 4px; }
+  .card small { display: none; }
+}
+@media (max-width: 520px) {
+  .disk { width: 44%; }
+  .stage-top { padding: 14px; }
+  .rule button { padding: 13px 14px; gap: 10px; grid-template-columns: 24px minmax(0, 1fr) auto; }
+  .why { margin-left: 14px; margin-right: 14px; }
+  .pill { padding: 5px 7px; font-size: 11px; }
+  .intro .ctas .btn.small { display: none; }
+}
+
+/* Reduced motion: no scroll scene; a button sweeps instead */
+@media (prefers-reduced-motion: reduce) {
+  .sweep { height: auto; }
+  .sweep-sticky { position: relative; height: auto; min-height: 100svh; }
+  .stage { height: 520px; }
+  .replay { display: inline-flex; }
+  .scroll-hint { display: none; }
+  .sweepable, .donts .x::after, .donts .instead { transition: none; }
+  .scroll-hint svg { animation: none; }
+}
+</style>
+</head>
+<body>
+
+<header class="top" id="top">
+  <div class="wrap">
+    <a class="brand" href="#"><img src="img/icon.png" alt="" width="34" height="34">Dustpan</a>
+    <nav class="nav">
+      <a href="how.html" class="hide-s">How it works</a>
+      <a class="btn small primary" href="#get">Download</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+<!-- 1. The sweep: scroll moves the pile into the Trash, scrolling back puts it back -->
+<section class="sweep" id="sweep" aria-label="Introduction">
+  <div class="sweep-sticky">
+    <div class="intro">
+      <div class="eyebrow"><span class="dot"></span>Free Mac cleaner · macOS 14+</div>
+      <h1>Clear the clutter. <em>Keep the&nbsp;undo.</em></h1>
+      <p class="lede">Dustpan finds the caches, build files and old installers your Mac can rebuild without, explains each one in plain words, and moves only what you approve to the Trash.</p>
+      <div class="ctas">
+        <a class="btn primary" href="#get">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m0 0-5-5m5 5 5-5M4 20h16"/></svg>
+          Download free
+        </a>
+        <span class="scroll-hint muted">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M8 2v11m0 0-4-4m4 4 4-4"/></svg>
+          Scroll to sweep
+        </span>
+        <button class="btn small replay" id="replay" type="button">Sweep it</button>
+      </div>
+    </div>
+
+    <div class="stage" id="stage" role="img" aria-label="An example scan: 18.4 GB of caches, build files and installers move into the Trash as you scroll. Scrolling back up takes them out again.">
+      <div class="stage-top">
+        <div>
+          <div class="counter" id="counter">18.4 GB</div>
+          <div class="counter-label" id="counterLabel">you can free</div>
+        </div>
+        <div class="disk">
+          <div class="disk-bar"><div class="disk-used" id="diskUsed"></div></div>
+          <div class="disk-text" id="diskText">74.0 GB free of 245 GB</div>
+        </div>
+      </div>
+      <div class="desk" id="desk" aria-hidden="true"></div>
+      <div class="done" id="done" aria-hidden="true"><b>Swept.</b><span>Nothing deleted. All 8 are in the Trash.</span></div>
+      <div class="bin" id="bin" aria-hidden="true">
+        <svg viewBox="0 0 100 118">
+          <g class="lid" id="lid">
+            <rect x="4" y="14" width="92" height="12" rx="5" fill="var(--stone)" stroke="var(--ink-fixed)" stroke-width="4"/>
+            <rect x="36" y="4" width="28" height="11" rx="4" fill="var(--stone)" stroke="var(--ink-fixed)" stroke-width="4"/>
+          </g>
+          <path d="M12 30h76l-7 80a6 6 0 0 1-6 5H25a6 6 0 0 1-6-5Z" fill="var(--stone)" stroke="var(--ink-fixed)" stroke-width="4" stroke-linejoin="round"/>
+          <path d="M36 46v54M50 46v54M64 46v54" stroke="var(--ink-fixed)" stroke-width="4" stroke-linecap="round" opacity=".35"/>
+        </svg>
+        <div class="bin-badge" id="binBadge">0</div>
+      </div>
+      <p class="stage-caption"><span id="caption">An example scan.</span></p>
+    </div>
+  </div>
+</section>
+
+<!-- 2. Promises -->
+<section class="block sweepable" id="promises" data-title="Three promises">
+  <div class="wrap">
+    <button class="sweep-me" type="button" data-sweep="promises"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 4h10M6 4V2.5h4V4M4.5 4l.7 9.5h5.6l.7-9.5"/></svg>Sweep this section</button>
+    <div class="kicker"><span class="dot"></span>How it behaves</div>
+    <h2>Calm, specific, and it never deletes on its own.</h2>
+    <div class="tiles">
+      <article class="tile t-sun">
+        <div class="glyph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h10M4 18h13"/></svg></div>
+        <h3>Plain words</h3>
+        <p>Every item says what it is and what happens if it goes. “Xcode rebuilds them the next time you build” beats a progress bar and a big red number.</p>
+      </article>
+      <article class="tile t-bubblegum">
+        <div class="glyph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m8 7-5 5 5 5M16 7l5 5-5 5M14 4l-4 16"/></svg></div>
+        <h3>Knows your tools</h3>
+        <p>Xcode, simulators, npm, Yarn, pnpm, Cargo, Go, Gradle, pip, CocoaPods, JetBrains and more.</p>
+        <ul><li>Junk never lists your Ollama or LM Studio models.</li></ul>
+      </article>
+      <article class="tile t-mint">
+        <div class="glyph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 14 4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 0 11H11"/></svg></div>
+        <h3>Trash first</h3>
+        <p>Everything goes to the Trash and into a history you can put back from.</p>
+        <ul>
+          <li>Files changed in the last 7 days are never pre-selected.</li>
+          <li>iCloud, Mail, Photos and Keychains are off-limits.</li>
+          <li>Empty Trash asks first and shows the size.</li>
+        </ul>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- 3. Real rules, real reasons -->
+<section class="block" id="rules">
+  <div class="wrap">
+    <div class="kicker"><span class="dot" style="background:var(--cobalt)"></span>The rule book</div>
+    <h2>Every line comes with a reason.</h2>
+    <p class="section-lede muted">These are the real rules Dustpan scans with, all <span id="ruleCount">179</span> of them. Tap a line to read what Dustpan tells you about it. <a href="how.html">How the scan uses them →</a></p>
+
+    <div class="explorer">
+      <div class="tabs" role="tablist" aria-label="Rule categories" id="tabs"></div>
+      <ul class="rules" id="ruleList" role="tabpanel" aria-labelledby=""></ul>
+      <div class="explorer-foot">
+        <span class="muted" id="ruleFootNote">Ticked lines are pre-selected. “Review” lines never are.</span>
+        <button class="btn small" type="button" id="showAll" hidden>Show all</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 4. Inside the app -->
+<section class="block sweepable" id="inside" data-title="What's inside">
+  <div class="wrap">
+    <button class="sweep-me" type="button" data-sweep="inside"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 4h10M6 4V2.5h4V4M4.5 4l.7 9.5h5.6l.7-9.5"/></svg>Sweep this section</button>
+    <div class="kicker"><span class="dot" style="background:var(--tomato)"></span>Inside the app</div>
+    <h2>One click to look. You decide what goes.</h2>
+    <div class="window">
+      <picture>
+        <source srcset="img/junk-dark.webp" media="(prefers-color-scheme: dark)">
+        <img src="img/junk-light.webp" width="2160" height="1440" loading="lazy" alt="Dustpan's Junk screen: app caches, logs, saved window state and developer caches as tiles, a list of caches each marked Safe with a one-line reason, Chrome's cache held back until Chrome is quit, and a button reading Move 471.1 MB to Trash.">
+      </picture>
+    </div>
+    <div class="features">
+      <div class="feature"><h3><span class="dot"></span>Sweep</h3><p class="muted">One scan, grouped into tiles you can open and read before anything moves.</p></div>
+      <div class="feature"><h3><span class="dot" style="background:var(--bubblegum)"></span>Junk</h3><p class="muted">Caches, logs, build files and installers, each marked Safe or Review.</p></div>
+      <div class="feature"><h3><span class="dot" style="background:var(--tomato)"></span>Apps</h3><p class="muted">Remove an app with the leftovers it scattered, and see which apps have updates.</p></div>
+      <div class="feature"><h3><span class="dot" style="background:var(--cobalt)"></span>Space map</h3><p class="muted">See which folders are actually big, all the way down.</p></div>
+      <div class="feature"><h3><span class="dot" style="background:var(--mint)"></span>Clutter</h3><p class="muted">Duplicate files, matched by a hash of their whole contents, plus big files you haven't opened in a while.</p></div>
+      <div class="feature"><h3><span class="dot" style="background:var(--stone)"></span>History</h3><p class="muted">Every move is logged. Put any item back from where it came.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 5. What it doesn't do -->
+<section class="block sweepable" id="donts" data-title="What it doesn't do">
+  <div class="wrap">
+    <button class="sweep-me" type="button" data-sweep="donts"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 4h10M6 4V2.5h4V4M4.5 4l.7 9.5h5.6l.7-9.5"/></svg>Sweep this section</button>
+    <div class="kicker"><span class="dot" style="background:var(--stone)"></span>Left out on purpose</div>
+    <h2>What Dustpan doesn't do.</h2>
+    <ul class="donts" id="donts-list">
+      <li><span class="x">Free RAM buttons</span><span class="instead">macOS manages memory better than any button.</span></li>
+      <li><span class="x">Scary “threats found”</span><span class="instead">A cache isn't a threat. It's a cache.</span></li>
+      <li><span class="x">Magic speed-ups</span><span class="instead">Deleting caches frees space. It doesn't make your Mac faster, so Dustpan won't claim it does.</span></li>
+      <li><span class="x">An agent that never quits</span><span class="instead">No background helper. The menu-bar item and launch at login are off unless you turn them on.</span></li>
+      <li><span class="x">Accounts and tracking</span><span class="instead">No sign-up, no analytics. The only thing that goes online is the app-update check, and only when you open the Updates tab.</span></li>
+    </ul>
+  </div>
+</section>
+
+<!-- 6. Receipt + download -->
+<section class="block" id="get">
+  <div class="wrap">
+    <div class="kicker"><span class="dot" style="background:var(--mint)"></span>Get it</div>
+    <h2>Free. For your Mac, on your Mac.</h2>
+    <div class="get">
+      <div class="receipt" aria-label="An example cleanup log">
+        <h3>DUSTPAN</h3>
+        <p class="c">cleanup log · example</p>
+        <hr>
+        <div class="row"><span>Xcode DerivedData</span><span>9.3 GB</span></div>
+        <div class="row"><span>iOS DeviceSupport</span><span>3.1 GB</span></div>
+        <div class="row"><span>npm cache</span><span>2.3 GB</span></div>
+        <div class="row"><span>Old installers (.dmg)</span><span>1.4 GB</span></div>
+        <div class="row"><span>App caches</span><span>1.2 GB</span></div>
+        <div class="row"><span>Simulator caches</span><span>640 MB</span></div>
+        <div class="row"><span>Logs</span><span>412 MB</span></div>
+        <div class="row"><span>Saved window state</span><span>24 MB</span></div>
+        <hr>
+        <div class="row total"><span>TOTAL MOVED</span><span>18.4 GB</span></div>
+        <div class="row"><span>Deleted for good</span><span>0 B</span></div>
+        <div class="row"><span>Can be put back</span><span>all of it</span></div>
+        <hr>
+        <p class="c">thank you, come again</p>
+      </div>
+
+      <div class="download">
+        <div class="head">
+          <img src="img/icon.png" alt="" width="72" height="72">
+          <div>
+            <h3>Dustpan <span id="relVersion">0.1.0</span></h3>
+            <p class="meta"><span id="relSize">9.3 MB</span> · macOS 14 Sonoma or later · Apple silicon and Intel</p>
+          </div>
+        </div>
+        <a class="btn primary" id="dlLink" href="Dustpan-0.1.0.dmg" download>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m0 0-5-5m5 5 5-5M4 20h16"/></svg>
+          Download the disk image
+        </a>
+
+        <ol class="steps">
+          <li><span>Open the disk image and <b>drag Dustpan into Applications</b>.</span></li>
+          <li><span>Open Dustpan. macOS will say it can't check the app for malicious software. That's because Dustpan isn't notarized: it's a free app made without a paid Apple developer account. Close the message.</span></li>
+          <li><span>Open <b>System Settings → Privacy &amp; Security</b>, scroll down, and click <b>Open Anyway</b> next to Dustpan. You only do this once.</span></li>
+          <li><span>When Dustpan asks, turn on <b>Full Disk Access</b> so it can see your caches, Downloads and Trash. It works without it, but sees less.</span></li>
+        </ol>
+
+        <div class="sha">
+          <span class="muted">Want to check the file? Its SHA-256 checksum:</span>
+          <div class="sha-row">
+            <code id="shaValue">14f2d0bbd8b870bfc29a812f0163052cc4021772d8b9bd4f8f8a120b6271f8ec</code>
+            <button class="btn small" type="button" id="copySha">Copy</button>
+          </div>
+          <span class="cmd">In Terminal: shasum -a 256 ~/Downloads/<span id="relFile">Dustpan-0.1.0.dmg</span></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <a class="brand" href="#"><img src="img/icon.png" alt="" width="34" height="34">Dustpan</a>
+    <p class="muted"><a href="how.html">How it works</a> · <a href="licenses/THIRD_PARTY_NOTICES.txt">Credits</a> · <a href="privacy.html">Privacy &amp; terms</a> · Made by Dan. Free under the MIT License, provided as is, without warranty. This page loads no trackers and no fonts from anyone else.</p>
+  </div>
+</footer>
+
+<!-- The page's own Trash: swept sections land here and can be put back -->
+<div class="page-trash" id="pageTrash">
+  <div class="trash-panel" id="trashPanel" role="dialog" aria-label="Swept sections">
+    <h4>In this page's Trash</h4>
+    <p class="muted" style="font-size:13px">Same idea as the app: nothing is gone until you say so.</p>
+    <ul id="trashList"></ul>
+  </div>
+  <button class="btn" type="button" id="trashBtn" aria-expanded="false" aria-controls="trashPanel">
+    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 4h10M6 4V2.5h4V4M4.5 4l.7 9.5h5.6l.7-9.5"/></svg>
+    Trash · <span id="trashCount">0</span>
+  </button>
+</div>
+
+<script>
+(() => {
+  const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* ——— Size formatting: decimal units, like ByteCountFormatter(.file) ——— */
+  function fmt(bytes) {
+    if (bytes < 1) return "0 bytes";
+    if (bytes >= 1e9) return (bytes / 1e9).toFixed(1) + " GB";
+    if (bytes >= 1e6) return (bytes >= 1e8 ? Math.round(bytes / 1e6) : parseFloat((bytes / 1e6).toFixed(1))) + " MB";
+    if (bytes >= 1e3) return Math.round(bytes / 1e3) + " KB";
+    return Math.round(bytes) + " bytes";
+  }
+  const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+  const ease = t => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+
+  /* ——— Header turns solid once the page scrolls ——— */
+  const header = document.getElementById("top");
+  const solidHeader = () => header.classList.toggle("solid", scrollY > 12);
+  addEventListener("scroll", solidHeader, { passive: true });
+  solidHeader();
+
+  /* ——— 1. Sweep scene ——— */
+  const items = [
+    // label, path, bytes, tone, start x/y (fraction of desk), rotation
+    ["Xcode DerivedData", "~/Library/Developer/Xcode", 9.3e9, "bubblegum", .30, .36, -6],
+    ["iOS DeviceSupport", "Xcode/iOS DeviceSupport", 3.1e9, "bubblegum", .66, .33, 5],
+    ["npm cache", "~/.npm/_cacache", 2.3e9, "bubblegum", .22, .58, 4],
+    ["Old installers", "~/Downloads/*.dmg", 1.4e9, "mint", .55, .52, -3],
+    ["App caches", "~/Library/Caches", 1.2e9, "sun", .38, .76, 7],
+    ["Simulator caches", "CoreSimulator/Caches", 6.4e8, "bubblegum", .70, .62, -8],
+    ["Logs", "~/Library/Logs", 4.12e8, "cobalt", .17, .82, -4],
+    ["Saved window state", "Saved Application State", 2.4e7, "sun", .56, .80, 3],
+  ];
+  const total = items.reduce((s, i) => s + i[2], 0);
+  const diskTotal = 245e9, diskFreeStart = 74e9;
+
+  const sweepEl = document.getElementById("sweep");
+  const stage = document.getElementById("stage");
+  const desk = document.getElementById("desk");
+  const bin = document.getElementById("bin");
+  const lid = document.getElementById("lid");
+  const counter = document.getElementById("counter");
+  const counterLabel = document.getElementById("counterLabel");
+  const binBadge = document.getElementById("binBadge");
+  const caption = document.getElementById("caption");
+  const diskUsed = document.getElementById("diskUsed");
+  const diskText = document.getElementById("diskText");
+  const done = document.getElementById("done");
+
+  const cards = items.map(([label, path, bytes, tone]) => {
+    const el = document.createElement("div");
+    el.className = "card t-" + tone;
+    el.innerHTML = `<b>${fmt(bytes)}</b><span>${label}</span><small>${path}</small>`;
+    desk.appendChild(el);
+    return el;
+  });
+
+  let geo = null;
+  function measure() {
+    const s = stage.getBoundingClientRect();
+    const top = stage.querySelector(".stage-top").offsetHeight;
+    const bw = bin.offsetWidth;
+    const pad = Math.max(14, s.width * .035);
+    const binX = s.width - bw - pad;
+    const binY = s.height - bw * 1.18 - pad;
+    bin.style.left = binX + "px";
+    bin.style.top = binY + "px";
+    geo = {
+      w: s.width, h: s.height, top,
+      cw: cards[0].offsetWidth, ch: cards[0].offsetHeight,
+      tx: binX + bw / 2, ty: binY + bw * .2,
+    };
+  }
+
+  function render(p) {
+    if (!geo) measure();
+    const { w, h, top, cw, ch, tx, ty } = geo;
+    const deskH = h - top;
+    let remaining = 0, inBin = 0, lidOpen = 0;
+
+    items.forEach((it, i) => {
+      const start = .06 + i * .075;
+      const t = clamp((p - start) / .3, 0, 1);
+      const e = ease(t);
+      // Start: card centre placed in the pile, kept inside the desk
+      const sx = clamp(it[4] * w, cw / 2 + 10, w - cw / 2 - 10);
+      const sy = clamp(top + it[5] * deskH, top + ch / 2 + 10, h - ch / 2 - 10);
+      const x = sx + (tx - sx) * e;
+      const arc = Math.sin(Math.PI * t) * deskH * .22;
+      const y = sy + (ty - sy) * e - arc;
+      const scale = 1 - .8 * e;
+      const rot = it[6] + (18 - it[6]) * e;
+      const el = cards[i];
+      el.style.transform = `translate(${x - cw / 2}px, ${y - ch / 2}px) rotate(${rot}deg) scale(${scale})`;
+      el.style.opacity = t > .88 ? String(1 - (t - .88) / .12) : "1";
+      el.style.zIndex = t > 0 ? 3 : 1;
+      remaining += it[2] * (1 - e);
+      if (t >= 1) inBin++;
+      if (t > 0 && t < 1) lidOpen = Math.max(lidOpen, Math.sin(Math.PI * Math.min(1, t * 1.2)));
+    });
+
+    lid.style.transform = `rotate(${-34 * lidOpen}deg)`;
+    counter.textContent = fmt(remaining);
+    binBadge.textContent = inBin;
+    done.style.opacity = clamp((p - .9) / .06, 0, 1);
+    const free = diskFreeStart + (total - remaining);
+    diskUsed.style.width = ((diskTotal - free) / diskTotal * 100).toFixed(2) + "%";
+    diskText.textContent = `${(free / 1e9).toFixed(1)} GB free of 245 GB`;
+
+    if (p < .05) {
+      counterLabel.textContent = "you can free";
+      caption.textContent = "An example scan.";
+    } else if (inBin < items.length) {
+      counterLabel.textContent = "left to sweep";
+      caption.textContent = "Moving to the Trash. Nothing is deleted.";
+    } else {
+      counterLabel.textContent = "all in the Trash";
+      caption.textContent = reduceMotion ? "All of it can be put back." : "Scroll up to put it all back.";
+    }
+  }
+
+  let progress = 0, queued = false;
+  function readScroll() {
+    queued = false;
+    const r = sweepEl.getBoundingClientRect();
+    const span = r.height - innerHeight;
+    progress = span > 0 ? clamp(-r.top / span, 0, 1) : 0;
+    render(progress);
+  }
+  if (!reduceMotion) {
+    addEventListener("scroll", () => { if (!queued) { queued = true; requestAnimationFrame(readScroll); } }, { passive: true });
+  } else {
+    // No movement: the button jumps between the two states
+    const btn = document.getElementById("replay");
+    btn.addEventListener("click", () => {
+      progress = progress < 1 ? 1 : 0;
+      render(progress);
+      btn.textContent = progress ? "Put it back" : "Sweep it";
+    });
+  }
+  addEventListener("resize", () => { measure(); render(progress); });
+  measure();
+  if (reduceMotion) render(0); else readScroll();
+
+  /* ——— 3. Rules explorer, from the app's own rules.json ——— */
+  const TABS = [
+    ["xcode", "Xcode", "bubblegum"],
+    ["dev", "Dev tools", "bubblegum"],
+    ["userCache", "App caches", "sun"],
+    ["logs", "Logs", "cobalt"],
+    ["installers", "Installers", "mint"],
+    ["savedState", "Window state", "sun"],
+    ["trash", "Trash", "stone"],
+    ["never", "Never listed", "tomato"],
+  ];
+  const LIMIT = 8;
+  const tabsEl = document.getElementById("tabs");
+  const listEl = document.getElementById("ruleList");
+  const showAll = document.getElementById("showAll");
+  const footNote = document.getElementById("ruleFootNote");
+  let rules = [], current = "xcode", expanded = false;
+
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  function ruleName(r) {
+    const path = (r.paths && r.paths[0]) || "";
+    const parts = path.split("/").filter(p => p && !p.includes("*"));
+    let name = parts[parts.length - 1] || path;
+    if (name === "~") name = "Home folder";
+    const exts = (r.globs || []).filter(g => /^\*\.\w+$/.test(g));
+    if (exts.length) name += " · " + exts.slice(0, 2).join(", ");
+    return name;
+  }
+  const inTab = (r, tab) => tab === "never" ? r.risk === "never" : (r.category === tab && r.risk !== "never");
+
+  function renderTabs() {
+    tabsEl.innerHTML = TABS.map(([id, label, tone]) => {
+      const n = rules.filter(r => inTab(r, id)).length;
+      if (!n) return "";
+      return `<button class="tab" role="tab" type="button" id="tab-${id}" data-tab="${id}" aria-selected="${id === current}">
+        <span class="dot" style="background:var(--${tone})"></span>${label} <span class="n">${n}</span></button>`;
+    }).join("");
+    listEl.setAttribute("aria-labelledby", "tab-" + current);
+  }
+
+  const tick = `<svg viewBox="0 0 14 14" fill="none" stroke="var(--ink-fixed)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m2.5 7.5 3 3 6-7"/></svg>`;
+  const lock = `<svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="6.5" width="8" height="6" rx="1.5"/><path d="M4.8 6.5V4.8a2.2 2.2 0 0 1 4.4 0v1.7"/></svg>`;
+  const pill = { safe: "✓ Safe", review: "Review", never: "Never listed" };
+
+  function renderList() {
+    const rows = rules.filter(r => inTab(r, current));
+    const shown = expanded ? rows : rows.slice(0, LIMIT);
+    listEl.innerHTML = shown.map((r, i) => {
+      const check = r.risk === "never" ? `<span class="check">${lock}</span>`
+        : `<span class="check ${r.risk === "safe" ? "on" : ""}">${r.risk === "safe" ? tick : ""}</span>`;
+      const quit = r.requiresQuit ? " · asks you to quit the app first" : "";
+      const age = r.minAgeDays ? ` · only files older than ${r.minAgeDays} days` : "";
+      return `<li class="rule${i === 0 ? " open" : ""}">
+        <button type="button" aria-expanded="${i === 0}">
+          <span aria-hidden="true">${check}</span>
+          <span style="min-width:0"><span class="name">${esc(ruleName(r))}</span><span class="path">${esc(r.paths[0] || "")}</span></span>
+          <span class="pill ${r.risk}">${pill[r.risk]}</span>
+        </button>
+        <div class="why">${esc(r.why)}<span class="meta">rule ${esc(r.id)}${age}${quit}</span></div>
+      </li>`;
+    }).join("");
+    showAll.hidden = rows.length <= LIMIT;
+    showAll.textContent = expanded ? "Show fewer" : `Show all ${rows.length}`;
+    footNote.textContent = current === "never"
+      ? "Dustpan knows about these so it can leave them alone. They never show up in a scan."
+      : "Ticked lines are pre-selected. “Review” lines never are.";
+  }
+
+  tabsEl.addEventListener("click", e => {
+    const b = e.target.closest(".tab");
+    if (!b) return;
+    current = b.dataset.tab; expanded = false;
+    renderTabs(); renderList();
+    document.getElementById("tab-" + current).focus();
+  });
+  tabsEl.addEventListener("keydown", e => {
+    if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
+    const all = [...tabsEl.querySelectorAll(".tab")];
+    const i = all.findIndex(t => t.dataset.tab === current);
+    const next = all[(i + (e.key === "ArrowRight" ? 1 : all.length - 1)) % all.length];
+    next.click();
+  });
+  listEl.addEventListener("click", e => {
+    const b = e.target.closest(".rule button");
+    if (!b) return;
+    const li = b.parentElement;
+    const open = !li.classList.contains("open");
+    li.classList.toggle("open", open);
+    b.setAttribute("aria-expanded", open);
+  });
+  showAll.addEventListener("click", () => { expanded = !expanded; renderList(); });
+
+  fetch("rules.json").then(r => r.json()).then(data => {
+    rules = Array.isArray(data) ? data : (data.rules || []);
+    document.getElementById("ruleCount").textContent = rules.length;
+    renderTabs(); renderList();
+  }).catch(() => {
+    listEl.innerHTML = `<li class="rule"><div class="why" style="display:block;margin:16px">The rule list couldn't load. It ships inside the app, so nothing is lost.</div></li>`;
+  });
+
+  /* ——— 5. Strike-through as each line scrolls in ——— */
+  const strikeObs = new IntersectionObserver(entries => {
+    entries.forEach(en => { if (en.isIntersecting) { en.target.classList.add("struck"); strikeObs.unobserve(en.target); } });
+  }, { rootMargin: "0px 0px -20% 0px" });
+  document.querySelectorAll(".donts li").forEach((li, i) => { li.style.transitionDelay = i * 80 + "ms"; strikeObs.observe(li); });
+
+  /* ——— Page Trash: sweep a section away, put it back ——— */
+  const pageTrash = document.getElementById("pageTrash");
+  const trashBtn = document.getElementById("trashBtn");
+  const trashPanel = document.getElementById("trashPanel");
+  const trashList = document.getElementById("trashList");
+  const trashCount = document.getElementById("trashCount");
+  const swept = [];
+
+  function renderTrash() {
+    trashCount.textContent = swept.length;
+    pageTrash.classList.toggle("show", swept.length > 0);
+    trashList.innerHTML = swept.map(id => `<li>${esc(document.getElementById(id).dataset.title)}
+      <button class="btn small" type="button" data-restore="${id}">Put back</button></li>`).join("");
+    if (!swept.length) { trashPanel.classList.remove("open"); trashBtn.setAttribute("aria-expanded", "false"); }
+  }
+  document.addEventListener("click", e => {
+    const s = e.target.closest("[data-sweep]");
+    if (s) {
+      const sec = document.getElementById(s.dataset.sweep);
+      const next = sec.nextElementSibling;
+      sec.classList.add("going");
+      setTimeout(() => {
+        sec.classList.add("gone");
+        swept.push(sec.id);
+        renderTrash();
+        trashBtn.classList.remove("bump"); void trashBtn.offsetWidth; trashBtn.classList.add("bump");
+        if (next) next.querySelector("h2, .kicker")?.scrollIntoView({ block: "start", behavior: reduceMotion ? "auto" : "smooth" });
+      }, reduceMotion ? 0 : 500);
+      return;
+    }
+    const r = e.target.closest("[data-restore]");
+    if (r) {
+      const sec = document.getElementById(r.dataset.restore);
+      swept.splice(swept.indexOf(sec.id), 1);
+      sec.classList.remove("gone");
+      void sec.offsetWidth;
+      sec.classList.remove("going");
+      renderTrash();
+      sec.scrollIntoView({ block: "start", behavior: reduceMotion ? "auto" : "smooth" });
+      return;
+    }
+    if (e.target.closest("#trashBtn")) {
+      const open = trashPanel.classList.toggle("open");
+      trashBtn.setAttribute("aria-expanded", open);
+    } else if (!e.target.closest("#trashPanel")) {
+      trashPanel.classList.remove("open");
+      trashBtn.setAttribute("aria-expanded", "false");
+    }
+  });
+
+  /* ——— Download details, written by `make site` ——— */
+  fetch("release.json", { cache: "no-store" }).then(r => r.ok ? r.json() : null).then(rel => {
+    if (!rel) return;
+    document.getElementById("relVersion").textContent = rel.version;
+    document.getElementById("relSize").textContent = fmt(rel.bytes);
+    document.getElementById("shaValue").textContent = rel.sha256;
+    document.getElementById("relFile").textContent = rel.file;
+    document.getElementById("dlLink").href = rel.file;
+  }).catch(() => {});
+
+  document.getElementById("copySha").addEventListener("click", e => {
+    const v = document.getElementById("shaValue").textContent;
+    navigator.clipboard?.writeText(v).then(() => {
+      e.target.textContent = "Copied";
+      setTimeout(() => e.target.textContent = "Copy", 1500);
+    }).catch(() => {});
+  });
+})();
+</script>
+</body>
+</html>

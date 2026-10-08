@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="170 150 700 700" width="18" height="18">
+  <!-- Dustpan menu-bar glyph: the app icon's tilted dustpan and dust dots, one colour,
+       transparent. Drawn as a template image so macOS tints it for light/dark menu bars. -->
+  <g fill="none" stroke="#000" stroke-width="58" stroke-linejoin="round" stroke-linecap="round"
+     transform="translate(512 470) rotate(-16) scale(0.84) translate(-512 -470) translate(20 -10)">
+    <rect x="466" y="190" width="92" height="230" rx="40"/>
+    <path d="M320 430 Q512 320 704 430 L790 690 L234 690 Z"/>
+    <path d="M262 636 L762 636"/>
+  </g>
+  <g fill="#000">
+    <circle cx="268" cy="784" r="58"/>
+    <circle cx="410" cy="806" r="45"/>
+    <circle cx="530" cy="800" r="35"/>
+  </g>
+</svg>

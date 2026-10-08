@@ -1,0 +1,10 @@
+// Copy to Config.xcconfig (gitignored) and fill in. `make` does the copy if it's missing.
+// Note: in .xcconfig files `//` starts a comment, so URLs are written as `https:/$()/...`.
+
+// No Apple Developer account: Dustpan is local-use only.
+DEVELOPMENT_TEAM =
+
+// Local builds are ad-hoc signed ("Sign to Run Locally") so no Apple account is needed.
+// Dustpan is local-use only, so release builds stay ad-hoc signed too (see PROGRESS.md).
+CODE_SIGN_STYLE = Manual
+CODE_SIGN_IDENTITY = -

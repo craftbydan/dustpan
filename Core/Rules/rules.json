@@ -1,0 +1,2807 @@
+[
+  {
+    "id": "cache.apps",
+    "title": "App caches",
+    "category": "userCache",
+    "paths": [
+      "~/Library/Caches"
+    ],
+    "globs": [
+      "*"
+    ],
+    "minAgeDays": 0,
+    "risk": "safe",
+    "why": "Data apps downloaded or worked out earlier, kept to open things faster. Apps rebuild it when needed, so removing it is safe.",
+    "requiresQuit": false,
+    "source": "mac-cleanup-py",
+    "excludeGlobs": [
+      "com.apple.*"
+    ]
+  },
+  {
+    "id": "cache.apple",
+    "title": "macOS caches",
+    "category": "userCache",
+    "paths": [
+      "~/Library/Caches"
+    ],
+    "globs": [
+      "com.apple.*"
+    ],
+    "minAgeDays": 0,
+    "risk": "review",
+    "why": "Caches made by macOS and Apple apps. They are rebuilt too, but some hold sign-in or sync state, so take a look first.",
+    "requiresQuit": false,
+    "needsFullDiskAccess": true,
+    "source": "dustpan"
+  },
+  {
+    "id": "cache.xdg",
+    "title": "Command-line tool caches",
+    "category": "userCache",
+    "paths": [
+      "~/.cache"
+    ],
+    "globs": [
+      "*"
+    ],
+    "minAgeDays": 0,
+    "risk": "review",
+    "why": "Caches that command-line tools keep in ~/.cache. Tools download or rebuild them, but check for anything you still need.",
+    "requiresQuit": false,
+    "source": "dustpan"
+  },
+  {
+    "id": "cache.chrome",
+    "title": "Chrome cache",
+    "category": "userCache",
+    "paths": [
+      "~/Library/Caches/Google/Chrome",
+      "~/Library/Caches/com.google.Chrome"
+    ],
+    "globs": [],
+    "minAgeDays": 0,
+    "risk": "safe",
+    "why": "Web pages and images Chrome saved to load sites faster. Chrome fetches them again as you browse.",
+    "requiresQuit": true,
+    "source": "dustpan",
+    "appBundleID": "com.google.Chrome"
+  },
+  {
+    "id": "cache.chrome.shaders",
+    "title": "Chrome graphics cache",
+    "category": "userCache",
+    "paths": [
+      "~/Library/Application Support/Google/Chrome/ShaderCache",
+      "~/Library/Application Support/Google/Chrome/GrShaderCache",
+      "~/Library/Application Support/Google/Chrome/GraphiteDawnCache"
+    ],
+    "globs": [],
+    "minAgeDays": 0,
+    "risk": "safe",
+    "why": "Compiled graphics shaders Chrome keeps to draw pages faster. Chrome compiles them again.",
+    "requiresQuit": true,
+    "source": "dustpan",
+    "appBundleID": "com.google.Chrome",
+    "needsFullDiskAccess": true
+  },
+  {
+    "id": "cache.chrome.gpu",
+    "title": "Chrome GPU cache",
+    "category": "userCache",
+    "paths": [
+      "~/Library/Application Support/Google/Chrome/*/GPUCache",
+      "~/Library/Application Support/Google/Chrome/*/DawnCache"
+    ],
+    "globs": [],
+    "minAgeDays": 0,
+    "risk": "safe",
+    "why": "Per-profile graphics caches in Chrome. Chrome rebuilds them; your history and passwords are not here.",
+    "requiresQuit": true,
+    "source": "dustpan",
+    "appBundleID": "com.google.Chrome",
+    "needsFullDiskAccess": true
+  },
+  {
+    "id": "cache.chrome.appcache",
+    "title": "Chrome application cache",
+    "category": "userCache",
+    "paths": [
+      "~/Library/Application Support/Google/Chrome/Default/Application Cache"
+    ],
+    "globs": [],
+    "minAgeDays": 0,
+    "risk": "safe",
+    "why": "Old offline web-app storage from Chrome. Sites download it again when needed.",
+    "requiresQuit": true,
+    "source": "mac-cleanup-py",
+    "appBundleID": "com.google.Chrome",
+    "needsFullDiskAccess": true
+  },
+  {
+    "id": "cache.chromium",
+    "title": "Chromium graphics caches",
+    "category": "userCache",
+    "paths": [
+      "~/Library/Application Support/Chromium/Default/DawnCache",
+      "~/Library/Application Support/Chromium/Default/GPUCache",
+      "~/Library/Application Support/Chromium/GrShaderCache",
+      "~/Library/Application Support/Chromium/GraphiteDawnCache",
+      "~/Library/Application Support/Chromium/ShaderCache"
+    ],
+    "globs": [],
+    "minAgeDays": 0,
+    "risk": "safe",
+    "why": "Graphics caches from Chromium. It rebuilds them the next time it draws a page.",
+    "requiresQuit": true,
+    "source": "mac-cleanup-py",
+    "appBundleID": "org.chromium.Chromium",
+    "needsFullDiskAccess": true
+  },
+  {
+    "id": "cache.firefox",
+    "title": "Firefox cache",
+    "category": "userCache",
+    "paths": [
+      "~/Library/Caches/Firefox/Profiles/*/cache2",
+      "~/Library/Caches/Mozilla/firefox/Profiles/*/cache2"
+    ],
+    "globs": [],
+    "minAgeDays": 0,
+    "risk": "safe",
+    "why": "Web pages and images Firefox saved to load sites faster. Firefox fetches them again.",
+    "requiresQuit": true,
+    "source": "dustpan",
+    "appBundleID": "org.mozilla.firefox"
+  },
+  {
+    "id": "cache.arc",
+    "title": "Arc cache",
+    "category": "userCache",
+    "paths": [
+      "~/Library/Caches/Arc",
+      "~/Library/Caches/company.thebrowser.Browser"
+    ],
+    "globs": [],
+    "minAgeDays": 0,
+    "risk": "safe",
+    "why": "Web pages and images Arc saved to load sites faster. Arc fetches them again as you browse.",
+    "requiresQuit": true,
+    "source": "mac-cleanup-py",
+    "appBundleID": "company.thebrowser.Browser"
+  },
+  {
+    "id": "cache.brave",
+    "title": "Brave cache",
+    "category": "userCache",
+    "paths": [
+      "~/Library/Caches/BraveSoftware",
+      "~/Library/Caches/com.brave.Browser"
+    ],
+    "globs": [],
+    "minAgeDays": 0,
+    "risk": "safe",
+    "why": "Web pages and images Brave saved to load sites faster. Brave fetches them again.",
+    "requiresQuit": true,
+    "source": "dustpan",
+    "appBundleID": "com.brave.Browser"
+  },
+  {
+    "id": "cache.edge",
+    "title": "Edge cache",
+    "category": "userCache",
+    "paths": [
+      "~/Library/Caches/Microsoft Edge",
+      "~/Library/Caches/com.microsoft.edgemac"
+    ],
+    "globs": [],
+    "minAgeDays": 0,
+    "risk": "safe",
+    "why": "Web pages and images Microsoft Edge saved to load sites faster. Edge fetches them again.",
+    "requiresQuit": true,
+    "source": "dustpan",
+    "appBundleID": "com.microsoft.edgemac"
+  },
+  {
+    "id": "cache.opera",
+    "title": "Opera cache",
+    "category": "userCache",
+    "paths": [
+      "~/Library/Caches/com.operasoftware.Opera"
+    ],
+    "globs": [],
+    "minAgeDays": 0,
+    "risk": "safe",
+    "why": "Web pages and images Opera saved to load sites faster. Opera fetches them again.",
+    "requiresQuit": true,
+    "source": "dustpan",
+    "appBundleID": "com.operasoftware.Opera"
+  },
+  {
+    "id": "cache.vivaldi",
+    "title": "Vivaldi cache",
+    "category": "userCache",
+    "paths": [
+      "~/Library/Caches/Vivaldi",
+      "~/Library/Caches/com.vivaldi.Vivaldi"
+    ],
+    "globs": [],
+    "minAgeDays": 0,
+    "risk": "safe",
+    "why": "Web pages and images Vivaldi saved to load sites faster. Vivaldi fetches them again.",
+    "requiresQuit": true,
+    "source": "dustpan",
+    "appBundleID": "com.vivaldi.Vivaldi"
+  },
+  {
+    "id": "cache.zen",
+    "title": "Zen browser cache",
+    "category": "userCache",
+    "paths": [
+      "~/Library/Caches/zen"
+    ],
+    "globs": [],
+    "minAgeDays": 0,
+    "risk": "safe",
+    "why": "Web pages and images the Zen browser saved to load sites faster. It fetches them again.",
+    "requiresQuit": true,
+    "source": "dustpan",
+    "appBundleID": "app.zen-browser.zen"
+  },
+  {
+    "id": "cache.slack",
+    "title": "Slack cache",
+    "category": "userCache",
+    "paths": [
+      "~/Library/Application Support/Slack/Cache",
+      "~/Library/Application Support/Slack/Code Cache",
+      "~/Library/Application Support/Slack/GPUCache"
+    ],
+    "globs": [],
+    "minAgeDays": 0,
+    "risk": "safe",
+    "why": "Images, files and compiled code Slack keeps to start faster. Slack downloads or rebuilds them.",
+    "requiresQuit": true,
+    "source": "dustpan",
+    "appBundleID": "com.tinyspeck.slackmacgap",
+    "needsFullDiskAccess": true
+  },
+  {
+    "id": "cache.discord",
+    "title": "Discord cache",
+    "category": "userCache",
+    "paths": [
+      "~/Library/Application Support/discord/Cache",
+      "~/Library/Application Support/discord/Code Cache",
+      "~/Library/Application Support/discord/GPUCache"
+    ],
+    "globs": [],
+    "minAgeDays": 0,
+    "risk": "safe",
+    "why": "Images, files and compiled code Discord keeps to start faster. Discord downloads or rebuilds them.",
+    "requiresQuit": true,
+    "source": "dustpan",
+    "appBundleID": "com.hnc.Discord",
+    "needsFullDiskAccess": true
+  },
+  {
+    "id": "cache.notion",
+    "title": "Notion cache",
+    "category": "userCache",
+    "paths": [
+      "~/Library/Application Support/Notion/Cache",
+      "~/Library/Application Support/Notion/Code Cache",
+      "~/Library/Application Support/Notion/GPUCache"
+    ],
+    "globs": [],
+    "minAgeDays": 0,
+    "risk": "safe",
+    "why": "Images, files and compiled code Notion keeps to start faster. Notion downloads or rebuilds them.",
+    "requiresQuit": true,
+    "source": "dustpan",
+    "appBundleID": "notion.id",
+    "needsFullDiskAccess": true
+  },
+  {
+    "id": "cache.figma",
+    "title": "Figma cache",
+    "category": "userCache",
+    "paths": [
+      "~/Library/Application Support/Figma/Cache",
+      "~/Library/Application Support/Figma/Code Cache",
+      "~/Library/Application Support/Figma/GPUCache"
+    ],
+    "globs": [],
+    "minAgeDays": 0,
+    "risk": "safe",
+    "why": "Images, files and compiled code Figma keeps to start faster. Figma downloads or rebuilds them.",
+    "requiresQuit": true,
+    "source": "dustpan",
+    "appBundleID": "com.figma.Desktop",
+    "needsFullDiskAccess": true
+  },
+  {
+    "id": "cache.whatsapp",
+    "title": "WhatsApp cache",
+    "category": "userCache",
+    "paths": [
+      "~/Library/Application Support/WhatsApp/Cache",
+      "~/Library/Application Support/WhatsApp/Code Cache",
+      "~/Library/Application Support/WhatsApp/GPUCache"
+    ],
+    "globs": [],
+    "minAgeDays": 0,
+    "risk": "safe",
+    "why": "Images, files and compiled code WhatsApp keeps to start faster. WhatsApp downloads or rebuilds them.",
+    "requiresQuit": true,
+    "source": "dustpan",
+    "appBundleID": "net.whatsapp.WhatsApp",
+    "needsFullDiskAccess": true
+  },
+  {
+    "id": "cache.signal",
+    "title": "Signal cache",
+    "category": "userCache",
+    "paths": [
+      "~/Library/Application Support/Signal/Cache",
+      "~/Library/Application Support/Signal/Code Cache",
+      "~/Library/Application Support/Signal/GPUCache"
+    ],
+    "globs": [],
+    "minAgeDays": 0,
+    "risk": "safe",
+    "why": "Images, files and compiled code Signal keeps to start faster. Signal downloads or rebuilds them.",
+    "requiresQuit": true,
+    "source": "dustpan",
+    "appBundleID": "org.whispersystems.signal-desktop",
+    "needsFullDiskAccess": true
+  },
+  {
+    "id": "cache.linear",
+    "title": "Linear cache",
+    "category": "userCache",
+    "paths": [
+      "~/Library/Application Support/Linear/Cache",
+      "~/Library/Application Support/Linear/Code Cache",
+      "~/Library/Application Support/Linear/GPUCache"
+    ],
+    "globs": [],
+    "minAgeDays": 0,
+    "risk": "safe",
+    "why": "Images, files and compiled code Linear keeps to start faster. Linear downloads or rebuilds them.",
+    "requiresQuit": true,
+    "source": "dustpan",
+    "appBundleID": "com.linear",
+    "needsFullDiskAccess": true
+  },
+  {
+    "id": "cache.postman",
+    "title": "Postman cache",
+    "category": "userCache",
+    "paths": [
+      "~/Library/Application Support/Postman/Cache",
+      "~/Library/Application Support/Postman/Code Cache",
+      "~/Library/Application Support/Postman/GPUCache"
+    ],
+    "globs": [],
+    "minAgeDays": 0,
+    "risk": "safe",
+    "why": "Images, files and compiled code Postman keeps to start faster. Postman downloads or rebuilds them.",
+    "requiresQuit": true,
+    "source": "dustpan",
+    "appBundleID": "com.postmanlabs.mac",
+    "needsFullDiskAccess": true
+  },
+  {
+    "id": "cache.teams",
+    "title": "Microsoft Teams cache",
+    "category": "userCache",
+    "paths": [
+      "~/Library/Application Support/Microsoft/Teams/Cache",
+      "~/Library/Application Support/Microsoft/Teams/Code Cache",
+      "~/Library/Application Support/Microsoft/Teams/gpucache",
+      "~/Library/Application Support/Microsoft/Teams/Application Cache",
+      "~/Library/Application Support/Microsoft/Teams/tmp"
+    ],
+    "globs": [],
+    "minAgeDays": 0,
+    "risk": "safe",
+    "why": "Images and compiled code classic Teams keeps to start faster. Teams downloads them again.",
+    "requiresQuit": true,
+    "source": "mac-cleanup-py",
+    "appBundleID": "com.microsoft.teams",
+    "needsFullDiskAccess": true
+  },
+  {
+    "id": "cache.obsidian",
+    "title": "Obsidian cache",
+    "category": "userCache",
+    "paths": [
+      "~/Library/Application Support/obsidian/Cache",
+      "~/Library/Application Support/obsidian/Code Cache",
+      "~/Library/Application Support/obsidian/DawnGraphiteCache",
+      "~/Library/Application Support/obsidian/DawnWebGPUCache",
+      "~/Library/Application Support/obsidian/GPUCache"
+    ],
+    "globs": [],
+    "minAgeDays": 0,
+    "risk": "safe",
+    "why": "Compiled code and graphics caches from the Obsidian app. Your notes live elsewhere and are not touched.",
+    "requiresQuit": true,
+    "source": "mac-cleanup-py",
+    "appBundleID": "md.obsidian",
+    "needsFullDiskAccess": true
+  },
+  {
+    "id": "cache.zoom",
+    "title": "Zoom cache",
+    "category": "userCache",
+    "paths": [
+      "~/Library/Caches/us.zoom.xos"
+    ],
+    "globs": [],
+    "minAgeDays": 0,
+    "risk": "safe",
+    "why": "Temporary files Zoom keeps between meetings. Zoom makes new ones next time.",
+    "requiresQuit": true,
+    "source": "dustpan",
+    "appBundleID": "us.zoom.xos"
+  },
+  {
+    "id": "cache.spotify.never",
+    "title": "Spotify offline music",
+    "category": "userCache",
+    "paths": [
+      "~/Library/Caches/com.spotify.client",
+      "~/Library/Application Support/Spotify/PersistentCache"
+    ],
+    "globs": [],
+    "minAgeDays": 0,
+    "risk": "never",
+    "why": "Spotify keeps your downloaded songs and podcasts here. Removing it would delete your downloads.",
+    "requiresQuit": false,
+    "source": "dustpan",
+    "needsFullDiskAccess": true
+  },
+  {
+    "id": "cache.music.never",
+    "title": "Apple Music downloads",
+    "category": "userCache",
+    "paths": [
+      "~/Library/Caches/com.apple.Music",
+      "~/Library/Caches/com.apple.iTunes",
+      "~/Library/Caches/com.apple.podcasts"
+    ],
+    "globs": [],
+    "minAgeDays": 0,
+    "risk": "never",
+    "why": "Music and Podcasts keep streamed and offline audio here. Removing it can delete downloads, so Dustpan leaves it.",
+    "requiresQuit": false,
+    "source": "dustpan"
+  },
+  {
+    "id": "cache.cloudkit.never",
+    "title": "iCloud sync cache",
+    "category": "userCache",
+    "paths": [
+      "~/Library/Caches/CloudKit"
+    ],
+    "globs": [],
+    "minAgeDays": 0,
+    "risk": "never",
+    "why": "iCloud keeps sync state here. Removing it can force a full re-sync, so Dustpan leaves it alone.",
+    "requiresQuit": false,
+    "source": "dustpan"
+  },
+  {
+    "id": "cache.lmstudio.never",
+    "title": "LM Studio models",
+    "category": "ai",
+    "paths": [
+      "~/.cache/lm-studio",
+      "~/.lmstudio/models"
+    ],
+    "globs": [],
+    "minAgeDays": 0,
+    "risk": "never",
+    "why": "Models you downloaded in LM Studio. They are large to fetch again, so Dustpan never lists them.",
+    "requiresQuit": false,
+    "source": "dustpan"
+  },
+  {
+    "id": "cache.ollama.never",
+    "title": "Ollama models",
+    "category": "ai",
+    "paths": [
+      "~/.ollama/models"
+    ],
+    "globs": [],
+    "minAgeDays": 0,
+    "risk": "never",
+    "why": "Models you pulled with Ollama. Remove one with ollama rm in Terminal when you are done with it.",
+    "requiresQuit": false,
+    "source": "dustpan"
+  },
+  {
+    "id": "cache.huggingface.token.never",
+    "title": "Hugging Face sign-in",
+    "category": "ai",
+    "paths": [
+      "~/.cache/huggingface/token",
+      "~/.cache/huggingface/stored_tokens"
+    ],
+    "globs": [],
+    "minAgeDays": 0,
+    "risk": "never",
+    "why": "Your Hugging Face access tokens, kept beside its cache. Removing them signs you out, so Dustpan never lists them.",
+    "requiresQuit": false,
+    "source": "dustpan"
+  },
+  {
+    "id": "cache.steam",
+    "title": "Steam caches",
+    "category": "userCache",
+    "paths": [
+      "~/Library/Application Support/Steam/appcache",
+      "~/Library/Application Support/Steam/depotcache",
+      "~/Library/Application Support/Steam/steamapps/shadercache",
+      "~/Library/Application Support/Steam/steamapps/temp"
+    ],
+    "globs": [],
+    "minAgeDays": 0,
+    "risk": "safe",
+    "why": "Store pages, shader and download caches from Steam. Your games stay installed; Steam rebuilds these.",
+    "requiresQuit": true,
+    "source": "mac-cleanup-py",
+    "appBundleID": "com.valvesoftware.steam",
+    "needsFullDiskAccess": true
+  },
+  {
+    "id": "cache.ea",
+    "title": "EA app caches",
+    "category": "userCache",
+    "paths": [
+      "~/Library/Application Support/Electronic Arts/EA app/CEF/BrowserCache/EADesktop/Cache",
+      "~/Library/Application Support/Electronic Arts/EA app/CEF/BrowserCache/EADesktop/Code Cache",
+      "~/Library/Application Support/Electronic Arts/EA app/CEF/BrowserCache/EADesktop/DawnCache",
+      "~/Library/Application Support/Electronic Arts/EA app/CEF/BrowserCache/EADesktop/GPUCache",
+      "~/Library/Application Support/Electronic Arts/EA app/IGOCache",
+      "~/Library/Application Support/Electronic Arts/EA app/OfflineCache"
+    ],
+    "globs": [],
+    "minAgeDays": 0,
+    "risk": "safe",
+    "why": "Browser and overlay caches from the EA app. It downloads them again; your games are not touched.",
+    "requiresQuit": true,
+    "source": "mac-cleanup-py",
+    "appBundleID": "com.ea.app",
+    "needsFullDiskAccess": true
+  },
+  {
+    "id": "cache.minecraft",
+    "title": "Minecraft launcher cache",
+    "category": "userCache",
+    "paths": [
+      "~/Library/Application Support/minecraft/webcache",
+      "~/Library/Application Support/minecraft/webcache2"
+    ],
+    "globs": [],
+    "minAgeDays": 0,
+    "risk": "safe",
+    "why": "Web pages the Minecraft launcher saved. Your worlds and saves live elsewhere and stay put.",
+    "requiresQuit": false,
+    "source": "mac-cleanup-py",
+    "needsFullDiskAccess": true
+  },
+  {
+    "id": "cache.lunar",
+    "title": "Lunar Client caches",
+    "category": "userCache",
+    "paths": [
+      "~/.lunarclient/game-cache",
+      "~/.lunarclient/launcher-cache"
+    ],
+    "globs": [],
+    "minAgeDays": 0,
+    "risk": "safe",
+    "why": "Download caches from Lunar Client. It fetches them again when you start a game.",
+    "requiresQuit": false,
+    "source": "mac-cleanup-py"
+  },
+  {
+    "id": "cache.adobe.media",
+    "title": "Adobe media cache",
+    "category": "userCache",
+    "paths": [
+      "~/Library/Application Support/Adobe/Common/Media Cache Files"
+    ],
+    "globs": [],
+    "minAgeDays": 0,
+    "risk": "safe",
+    "why": "Preview and audio files Adobe video apps make while you edit. They are rebuilt when you open a project.",
+    "requiresQuit": false,
+    "source": "mac-cleanup-py",
+    "needsFullDiskAccess": true
+  },
+  {
+    "id": "cache.dropbox",
+    "title": "Dropbox cache",
+    "category": "userCache",
+    "paths": [
+      "~/Dropbox/.dropbox.cache"
+    ],
+    "globs": [
+      "*"
+    ],
+    "minAgeDays": 3,
+    "risk": "safe",
+    "why": "Old file versions Dropbox keeps while syncing. Dropbox clears them over time; your files are not here.",
+    "requiresQuit": false,
+    "source": "mac-cleanup-py"
+  },
+  {
+    "id": "cache.drivefs",
+    "title": "Google Drive file cache",
+    "category": "userCache",
+    "paths": [
+      "~/Library/Application Support/Google/DriveFS/*/content_cache"
+    ],
+    "globs": [],
+    "minAgeDays": 0,
+    "risk": "review",
+    "why": "Local copies of files from Google Drive. Drive downloads them again; offline files will need a network.",
+    "requiresQuit": true,
+    "source": "mac-cleanup-py",
+    "appBundleID": "com.google.drivefs",
+    "needsFullDiskAccess": true
+  },
+  {
+    "id": "cache.updater.ms",
+    "title": "Microsoft AutoUpdate cache",
+    "category": "userCache",
+    "paths": [
+      "~/Library/Caches/com.microsoft.autoupdate2",
+      "~/Library/Caches/com.microsoft.autoupdate.fba"
+    ],
+    "globs": [],
+    "minAgeDays": 0,
+    "risk": "safe",
+    "why": "Files Microsoft AutoUpdate downloaded while checking for updates. It downloads new ones when needed.",
+    "requiresQuit": false,
+    "source": "dustpan"
+  },
+  {
+    "id": "cache.updater.google",
+    "title": "Google updater cache",
+    "category": "userCache",
+    "paths": [
+      "~/Library/Caches/com.google.GoogleUpdater",
+      "~/Library/Caches/com.google.Keystone"
+    ],
+    "globs": [],
+    "minAgeDays": 0,
+    "risk": "safe",
+    "why": "Files Google's updater keeps while updating Chrome and other Google apps. It downloads new ones when needed.",
+    "requiresQuit": false,
+    "source": "dustpan"
+  },
+  {
+    "id": "cache.crashreports.sdk",
+    "title": "Crash-reporter caches",
+    "category": "userCache",
+    "paths": [
+      "~/Library/Caches/SentryCrash",
+      "~/Library/Caches/io.sentry",
+      "~/Library/Caches/com.plausiblelabs.crashreporter.data",
+      "~/Library/Caches/com.crashlytics.data"
+    ],
+    "globs": [],
+    "minAgeDays": 0,
+    "risk": "safe",
+    "why": "Crash reports apps saved to send to their makers. They have been sent already or are out of date.",
+    "requiresQuit": false,
+    "source": "dustpan"
+  },
+  {
+    "id": "cache.geoservices",
+    "title": "Map tiles cache",
+    "category": "userCache",
+    "paths": [
+      "~/Library/Caches/GeoServices"
+    ],
+    "globs": [],
+    "minAgeDays": 0,
+    "risk": "review",
+    "why": "Map tiles macOS saved for Maps and location features. They download again when you look at a map.",
+    "requiresQuit": false,
+    "source": "dustpan"
+  },
+  {
+    "id": "logs.user",
+    "title": "App logs",
+    "category": "logs",
+    "paths": [
+      "~/Library/Logs"
+    ],
+    "globs": [
+      "*"
+    ],
+    "minAgeDays": 7,
+    "risk": "safe",
+    "why": "Records apps write about what they did. Useful only when tracking down a problem; apps start new ones.",
+    "requiresQuit": false,
+    "source": "mac-cleanup-py",
+    "excludeGlobs": [
+      "DiagnosticReports",
+      "CoreSimulator",
+      "JetBrains",
+      "Homebrew"
+    ]
+  },
+  {
+    "id": "logs.diagnostic",
+    "title": "Crash reports",
+    "category": "logs",
+    "paths": [
+      "~/Library/Logs/DiagnosticReports"
+    ],
+    "globs": [
+      "*"
+    ],
+    "minAgeDays": 7,
+    "risk": "safe",
+    "why": "Reports macOS wrote when an app crashed or hung. Only needed if you plan to send one to a developer.",
+    "requiresQuit": false,
+    "source": "dustpan"
+  },
+  {
+    "id": "logs.coresimulator",
+    "title": "Simulator logs",
+    "category": "logs",
+    "paths": [
+      "~/Library/Logs/CoreSimulator"
+    ],
+    "globs": [
+      "*"
+    ],
+    "minAgeDays": 7,
+    "risk": "safe",
+    "why": "Logs from iOS simulators. The simulator writes new ones each time it runs.",
+    "requiresQuit": false,
+    "source": "mac-cleanup-py"
+  },
+  {
+    "id": "logs.jetbrains",
+    "title": "JetBrains IDE logs",
+    "category": "logs",
+    "paths": [
+      "~/Library/Logs/JetBrains"
+    ],
+    "globs": [
+      "*"
+    ],
+    "minAgeDays": 7,
+    "risk": "safe",
+    "why": "Logs from IntelliJ, PyCharm and other JetBrains IDEs. They start new ones on the next launch.",
+    "requiresQuit": false,
+    "source": "mac-cleanup-py"
+  },
+  {
+    "id": "logs.homebrew",
+    "title": "Homebrew logs",
+    "category": "logs",
+    "paths": [
+      "~/Library/Logs/Homebrew"
+    ],
+    "globs": [
+      "*"
+    ],
+    "minAgeDays": 7,
+    "risk": "safe",
+    "why": "Build logs Homebrew kept from installing packages. Only useful if an install failed.",
+    "requiresQuit": false,
+    "source": "PureMac"
+  },
+  {
+    "id": "logs.teams",
+    "title": "Microsoft Teams logs",
+    "category": "logs",
+    "paths": [
+      "~/Library/Application Support/Microsoft/Teams"
+    ],
+    "globs": [
+      "*logs*.txt",
+      "*watchdog*.json"
+    ],
+    "minAgeDays": 7,
+    "risk": "safe",
+    "why": "Diagnostic logs from classic Microsoft Teams. Teams writes new ones as it runs.",
+    "requiresQuit": false,
+    "source": "mac-cleanup-py",
+    "needsFullDiskAccess": true
+  },
+  {
+    "id": "logs.minecraft",
+    "title": "Minecraft logs",
+    "category": "logs",
+    "paths": [
+      "~/Library/Application Support/minecraft/logs",
+      "~/Library/Application Support/minecraft/crash-reports"
+    ],
+    "globs": [],
+    "minAgeDays": 7,
+    "risk": "safe",
+    "why": "Game logs and crash reports from Minecraft. Your worlds are not stored here.",
+    "requiresQuit": false,
+    "source": "mac-cleanup-py",
+    "needsFullDiskAccess": true
+  },
+  {
+    "id": "logs.minecraft.files",
+    "title": "Minecraft launcher logs",
+    "category": "logs",
+    "paths": [
+      "~/Library/Application Support/minecraft"
+    ],
+    "globs": [
+      "*.log",
+      "launcher_cef_log.txt"
+    ],
+    "minAgeDays": 7,
+    "risk": "safe",
+    "why": "Log files the Minecraft launcher writes on each start. New ones appear next time.",
+    "requiresQuit": false,
+    "source": "mac-cleanup-py",
+    "needsFullDiskAccess": true
+  },
+  {
+    "id": "logs.lunar",
+    "title": "Lunar Client logs",
+    "category": "logs",
+    "paths": [
+      "~/.lunarclient/logs"
+    ],
+    "globs": [],
+    "minAgeDays": 7,
+    "risk": "safe",
+    "why": "Logs from Lunar Client. It writes new ones each time you play.",
+    "requiresQuit": false,
+    "source": "mac-cleanup-py"
+  },
+  {
+    "id": "logs.steam",
+    "title": "Steam logs",
+    "category": "logs",
+    "paths": [
+      "~/Library/Application Support/Steam/logs"
+    ],
+    "globs": [],
+    "minAgeDays": 7,
+    "risk": "safe",
+    "why": "Logs from Steam. Only useful when tracking down a Steam problem.",
+    "requiresQuit": false,
+    "source": "mac-cleanup-py",
+    "needsFullDiskAccess": true
+  },
+  {
+    "id": "logs.ea",
+    "title": "EA app logs",
+    "category": "logs",
+    "paths": [
+      "~/Library/Application Support/Electronic Arts/EA app/Logs"
+    ],
+    "globs": [],
+    "minAgeDays": 7,
+    "risk": "safe",
+    "why": "Logs from the EA app. It writes new ones as it runs.",
+    "requiresQuit": false,
+    "source": "mac-cleanup-py",
+    "needsFullDiskAccess": true
+  },
+  {
+    "id": "logs.obsidian",
+    "title": "Obsidian logs",
+    "category": "logs",
+    "paths": [
+      "~/Library/Application Support/obsidian"
+    ],
+    "globs": [
+      "*.log"
+    ],
+    "minAgeDays": 7,
+    "risk": "safe",
+    "why": "Log files from the Obsidian app. Your notes are not touched.",
+    "requiresQuit": false,
+    "source": "mac-cleanup-py",
+    "needsFullDiskAccess": true
+  },
+  {
+    "id": "logs.cacher",
+    "title": "Cacher and Kite logs",
+    "category": "logs",
+    "paths": [
+      "~/.cacher/logs",
+      "~/.kite/logs"
+    ],
+    "globs": [],
+    "minAgeDays": 7,
+    "risk": "safe",
+    "why": "Logs from the Cacher and Kite tools. They write new ones when they run.",
+    "requiresQuit": false,
+    "source": "mac-cleanup-py"
+  },
+  {
+    "id": "logs.wget",
+    "title": "wget log",
+    "category": "logs",
+    "paths": [
+      "~"
+    ],
+    "globs": [
+      "wget-log",
+      "wget-log.*"
+    ],
+    "minAgeDays": 7,
+    "risk": "safe",
+    "why": "Log file wget leaves in your home folder when run in the background.",
+    "requiresQuit": false,
+    "source": "mac-cleanup-py"
+  },
+  {
+    "id": "logs.npm",
+    "title": "npm logs",
+    "category": "logs",
+    "paths": [
+      "~/.npm/_logs"
+    ],
+    "globs": [],
+    "minAgeDays": 7,
+    "risk": "safe",
+    "why": "Debug logs npm writes after each command. Only useful right after a failed install.",
+    "requiresQuit": false,
+    "source": "dustpan"
+  },
+  {
+    "id": "logs.gradle.daemon",
+    "title": "Gradle daemon logs",
+    "category": "logs",
+    "paths": [
+      "~/.gradle/daemon"
+    ],
+    "globs": [],
+    "minAgeDays": 7,
+    "risk": "safe",
+    "why": "Logs and state from old Gradle background processes. Gradle starts fresh ones.",
+    "requiresQuit": false,
+    "source": "dustpan"
+  },
+  {
+    "id": "logs.docker",
+    "title": "Docker Desktop logs",
+    "category": "logs",
+    "paths": [
+      "~/Library/Containers/com.docker.docker/Data/log"
+    ],
+    "globs": [],
+    "minAgeDays": 7,
+    "risk": "review",
+    "why": "Logs from Docker Desktop. Docker writes new ones as it runs.",
+    "requiresQuit": false,
+    "source": "PureMac",
+    "detectionOnly": true,
+    "appBundleID": "com.docker.docker",
+    "needsFullDiskAccess": true
+  },
+  {
+    "id": "logs.orbstack",
+    "title": "OrbStack logs",
+    "category": "logs",
+    "paths": [
+      "~/.orbstack/log"
+    ],
+    "globs": [],
+    "minAgeDays": 7,
+    "risk": "safe",
+    "why": "Logs from OrbStack. It writes new ones as it runs.",
+    "requiresQuit": false,
+    "source": "PureMac"
+  },
+  {
+    "id": "logs.vscode",
+    "title": "VS Code logs",
+    "category": "logs",
+    "paths": [
+      "~/Library/Application Support/Code/logs"
+    ],
+    "globs": [],
+    "minAgeDays": 7,
+    "risk": "safe",
+    "why": "Session logs from VS Code. It writes new ones every time it starts.",
+    "requiresQuit": false,
+    "source": "PureMac",
+    "appBundleID": "com.microsoft.VSCode",
+    "needsFullDiskAccess": true
+  },
+  {
+    "id": "logs.claude",
+    "title": "Claude app logs",
+    "category": "logs",
+    "paths": [
+      "~/Library/Application Support/Claude/logs"
+    ],
+    "globs": [],
+    "minAgeDays": 7,
+    "risk": "safe",
+    "why": "Logs from the Claude desktop app. It writes new ones as it runs.",
+    "requiresQuit": false,
+    "source": "dustpan",
+    "needsFullDiskAccess": true
+  },
+  {
+    "id": "savedState.apps",
+    "title": "Saved window state",
+    "category": "savedState",
+    "paths": [
+      "~/Library/Saved Application State"
+    ],
+    "globs": [
+      "*.savedState"
+    ],
+    "minAgeDays": 0,
+    "risk": "safe",
+    "why": "Where apps remember open windows to restore them at launch. Removing it just opens apps with fresh windows.",
+    "requiresQuit": false,
+    "source": "PureMac"
+  },
+  {
+    "id": "savedState.autosave.never",
+    "title": "Unsaved documents",
+    "category": "savedState",
+    "paths": [
+      "~/Library/Autosave Information"
+    ],
+    "globs": [],
+    "minAgeDays": 0,
+    "risk": "never",
+    "why": "Copies of documents you haven't saved yet. Dustpan never touches them.",
+    "requiresQuit": false,
+    "source": "dustpan"
+  },
+  {
+    "id": "installers.dmg",
+    "title": "Disk images in Downloads",
+    "category": "installers",
+    "paths": [
+      "~/Downloads"
+    ],
+    "globs": [
+      "*.dmg"
+    ],
+    "minAgeDays": 14,
+    "risk": "review",
+    "why": "Disk images you downloaded to install apps. Once the app is in Applications, the image is no longer needed.",
+    "requiresQuit": false,
+    "source": "dustpan",
+    "needsFullDiskAccess": true
+  },
+  {
+    "id": "installers.pkg",
+    "title": "Installer packages in Downloads",
+    "category": "installers",
+    "paths": [
+      "~/Downloads"
+    ],
+    "globs": [
+      "*.pkg",
+      "*.mpkg"
+    ],
+    "minAgeDays": 14,
+    "risk": "review",
+    "why": "Installer packages you already ran. The app stays installed without them.",
+    "requiresQuit": false,
+    "source": "dustpan",
+    "needsFullDiskAccess": true
+  },
+  {
+    "id": "installers.zip",
+    "title": "Zip files in Downloads",
+    "category": "installers",
+    "paths": [
+      "~/Downloads"
+    ],
+    "globs": [
+      "*.zip"
+    ],
+    "minAgeDays": 14,
+    "risk": "review",
+    "why": "Zip archives, often apps you already unpacked. Check none hold files you still need.",
+    "requiresQuit": false,
+    "source": "dustpan",
+    "needsFullDiskAccess": true
+  },
+  {
+    "id": "installers.xip",
+    "title": "Xcode archives in Downloads",
+    "category": "installers",
+    "paths": [
+      "~/Downloads"
+    ],
+    "globs": [
+      "*.xip"
+    ],
+    "minAgeDays": 14,
+    "risk": "review",
+    "why": "Xcode download archives (.xip). Once Xcode is installed, the archive is no longer needed.",
+    "requiresQuit": false,
+    "source": "dustpan",
+    "needsFullDiskAccess": true
+  },
+  {
+    "id": "installers.desktop",
+    "title": "Installers on the Desktop",
+    "category": "installers",
+    "paths": [
+      "~/Desktop"
+    ],
+    "globs": [
+      "*.dmg",
+      "*.pkg",
+      "*.mpkg"
+    ],
+    "minAgeDays": 14,
+    "risk": "review",
+    "why": "Disk images and installer packages on your Desktop. Once installed, the app doesn't need them.",
+    "requiresQuit": false,
+    "source": "dustpan",
+    "needsFullDiskAccess": true
+  },
+  {
+    "id": "installers.ipsw",
+    "title": "iPhone and iPad updates",
+    "category": "installers",
+    "paths": [
+      "~/Library/iTunes/iPhone Software Updates",
+      "~/Library/iTunes/iPad Software Updates",
+      "~/Library/iTunes/iPod Software Updates"
+    ],
+    "globs": [
+      "*.ipsw"
+    ],
+    "minAgeDays": 14,
+    "risk": "review",
+    "why": "Old system updates downloaded for an iPhone or iPad. Finder downloads a fresh one when needed.",
+    "requiresQuit": false,
+    "needsFullDiskAccess": true,
+    "source": "dustpan"
+  },
+  {
+    "id": "installers.sparkle",
+    "title": "App update downloads",
+    "category": "installers",
+    "paths": [
+      "~/Library/Caches/*/org.sparkle-project.Sparkle"
+    ],
+    "globs": [],
+    "minAgeDays": 14,
+    "risk": "safe",
+    "why": "Updates apps downloaded through their built-in updater. Apps download again if an update is still due.",
+    "requiresQuit": false,
+    "source": "dustpan"
+  },
+  {
+    "id": "installers.shipit",
+    "title": "Electron app update downloads",
+    "category": "installers",
+    "paths": [
+      "~/Library/Caches"
+    ],
+    "globs": [
+      "*.ShipIt"
+    ],
+    "minAgeDays": 14,
+    "risk": "safe",
+    "why": "Update files left by apps like Slack or VS Code after updating. The update is already installed.",
+    "requiresQuit": false,
+    "source": "dustpan"
+  },
+  {
+    "id": "installers.steam.downloads",
+    "title": "Unfinished Steam downloads",
+    "category": "installers",
+    "paths": [
+      "~/Library/Application Support/Steam/steamapps/download"
+    ],
+    "globs": [],
+    "minAgeDays": 14,
+    "risk": "review",
+    "why": "Game downloads Steam has not finished. Steam restarts them if you still want the game.",
+    "requiresQuit": false,
+    "source": "mac-cleanup-py",
+    "needsFullDiskAccess": true
+  },
+  {
+    "id": "installers.homebrew.downloads",
+    "title": "Homebrew downloads",
+    "category": "dev",
+    "paths": [
+      "~/Library/Caches/Homebrew/downloads",
+      "~/Library/Caches/Homebrew/Cask"
+    ],
+    "globs": [],
+    "minAgeDays": 0,
+    "risk": "safe",
+    "why": "Packages Homebrew downloaded before installing. Already installed; brew downloads them again if needed.",
+    "requiresQuit": false,
+    "source": "PureMac"
+  },
+  {
+    "id": "installers.msupdate.downloads",
+    "title": "Microsoft update downloads",
+    "category": "installers",
+    "paths": [
+      "~/Library/Caches/com.microsoft.autoupdate2/Downloads"
+    ],
+    "globs": [],
+    "minAgeDays": 14,
+    "risk": "safe",
+    "why": "Office updates Microsoft AutoUpdate already installed. It downloads new ones when needed.",
+    "requiresQuit": false,
+    "source": "dustpan"
+  },
+  {
+    "id": "trash.home",
+    "title": "Trash",
+    "category": "trash",
+    "paths": [
+      "~/.Trash"
+    ],
+    "globs": [],
+    "minAgeDays": 0,
+    "risk": "review",
+    "why": "Files you already moved to the Trash. Emptied only with Empty Trash, after you confirm the size.",
+    "requiresQuit": false,
+    "source": "mac-cleanup-py",
+    "detectionOnly": true,
+    "needsFullDiskAccess": true
+  },
+  {
+    "id": "xcode.deriveddata",
+    "title": "Xcode DerivedData",
+    "category": "xcode",
+    "paths": [
+      "~/Library/Developer/Xcode/DerivedData"
+    ],
+    "globs": [
+      "*"
+    ],
+    "minAgeDays": 0,
+    "risk": "safe",
+    "why": "Build products and indexes for your Xcode projects. Xcode rebuilds them the next time you build.",
+    "requiresQuit": false,
+    "source": "mac-cleanup-py"
+  },
+  {
+    "id": "xcode.archives",
+    "title": "Xcode archives",
+    "category": "xcode",
+    "paths": [
+      "~/Library/Developer/Xcode/Archives"
+    ],
+    "globs": [
+      "*"
+    ],
+    "minAgeDays": 0,
+    "risk": "review",
+    "why": "App builds you archived for release, with their debug symbols. Keep the ones you may need for crash reports.",
+    "requiresQuit": false,
+    "source": "mac-cleanup-py"
+  },
+  {
+    "id": "xcode.devicesupport.ios",
+    "title": "iOS device support",
+    "category": "xcode",
+    "paths": [
+      "~/Library/Developer/Xcode/iOS DeviceSupport"
+    ],
+    "globs": [
+      "*"
+    ],
+    "minAgeDays": 0,
+    "risk": "safe",
+    "why": "Debug files Xcode copied from an iPhone or iPad. Xcode copies them again when you connect that device.",
+    "requiresQuit": false,
+    "source": "PureMac"
+  },
+  {
+    "id": "xcode.devicesupport.watchos",
+    "title": "watchOS device support",
+    "category": "xcode",
+    "paths": [
+      "~/Library/Developer/Xcode/watchOS DeviceSupport"
+    ],
+    "globs": [
+      "*"
+    ],
+    "minAgeDays": 0,
+    "risk": "safe",
+    "why": "Debug files Xcode copied from an Apple Watch. Xcode copies them again when you connect that device.",
+    "requiresQuit": false,
+    "source": "PureMac"
+  },
+  {
+    "id": "xcode.devicesupport.tvos",
+    "title": "tvOS device support",
+    "category": "xcode",
+    "paths": [
+      "~/Library/Developer/Xcode/tvOS DeviceSupport"
+    ],
+    "globs": [
+      "*"
+    ],
+    "minAgeDays": 0,
+    "risk": "safe",
+    "why": "Debug files Xcode copied from an Apple TV. Xcode copies them again when you connect that device.",
+    "requiresQuit": false,
+    "source": "PureMac"
+  },
+  {
+    "id": "xcode.devicesupport.visionos",
+    "title": "visionOS device support",
+    "category": "xcode",
+    "paths": [
+      "~/Library/Developer/Xcode/visionOS DeviceSupport"
+    ],
+    "globs": [
+      "*"
+    ],
+    "minAgeDays": 0,
+    "risk": "safe",
+    "why": "Debug files Xcode copied from a Vision Pro. Xcode copies them again when you connect that device.",
+    "requiresQuit": false,
+    "source": "dustpan"
+  },
+  {
+    "id": "xcode.devicesupport.macos",
+    "title": "macOS device support",
+    "category": "xcode",
+    "paths": [
+      "~/Library/Developer/Xcode/macOS DeviceSupport"
+    ],
+    "globs": [
+      "*"
+    ],
+    "minAgeDays": 0,
+    "risk": "safe",
+    "why": "Debug files Xcode copied from a Mac. Xcode copies them again when you connect that device.",
+    "requiresQuit": false,
+    "source": "dustpan"
+  },
+  {
+    "id": "xcode.devicelogs",
+    "title": "iOS device logs",
+    "category": "xcode",
+    "paths": [
+      "~/Library/Developer/Xcode/iOS Device Logs"
+    ],
+    "globs": [
+      "*"
+    ],
+    "minAgeDays": 7,
+    "risk": "safe",
+    "why": "Logs Xcode pulled from connected devices. Xcode pulls new ones when it needs them.",
+    "requiresQuit": false,
+    "source": "mac-cleanup-py"
+  },
+  {
+    "id": "xcode.products",
+    "title": "Xcode products",
+    "category": "xcode",
+    "paths": [
+      "~/Library/Developer/Xcode/Products"
+    ],
+    "globs": [
+      "*"
+    ],
+    "minAgeDays": 0,
+    "risk": "review",
+    "why": "Builds Xcode kept for distribution and testing. Keep any you still need to share.",
+    "requiresQuit": false,
+    "source": "dustpan"
+  },
+  {
+    "id": "xcode.previews",
+    "title": "SwiftUI preview builds",
+    "category": "xcode",
+    "paths": [
+      "~/Library/Developer/Xcode/UserData/Previews"
+    ],
+    "globs": [
+      "*"
+    ],
+    "minAgeDays": 0,
+    "risk": "safe",
+    "why": "Builds Xcode makes for SwiftUI previews. Xcode makes them again when you open a preview.",
+    "requiresQuit": false,
+    "source": "PureMac"
+  },
+  {
+    "id": "xcode.docs",
+    "title": "Xcode documentation cache",
+    "category": "xcode",
+    "paths": [
+      "~/Library/Developer/Xcode/DocumentationCache",
+      "~/Library/Developer/Xcode/DocumentationIndex"
+    ],
+    "globs": [],
+    "minAgeDays": 0,
+    "risk": "safe",
+    "why": "Downloaded documentation Xcode keeps for quick lookups. Xcode downloads it again when needed.",
+    "requiresQuit": false,
+    "source": "dustpan"
+  },
+  {
+    "id": "xcode.cache",
+    "title": "Xcode cache",
+    "category": "xcode",
+    "paths": [
+      "~/Library/Caches/com.apple.dt.Xcode",
+      "~/Library/Caches/com.apple.dt.xcodebuild",
+      "~/Library/Caches/com.apple.dt.Xcode.sourcecontrol.Git"
+    ],
+    "globs": [],
+    "minAgeDays": 0,
+    "risk": "safe",
+    "why": "Download and index caches Xcode keeps. Xcode rebuilds them as you work.",
+    "requiresQuit": true,
+    "source": "PureMac",
+    "appBundleID": "com.apple.dt.Xcode"
+  },
+  {
+    "id": "xcode.coresim.caches",
+    "title": "Simulator caches",
+    "category": "xcode",
+    "paths": [
+      "~/Library/Developer/CoreSimulator/Caches"
+    ],
+    "globs": [
+      "*"
+    ],
+    "minAgeDays": 0,
+    "risk": "safe",
+    "why": "Caches the iOS Simulator builds for faster launches. It rebuilds them when it starts.",
+    "requiresQuit": false,
+    "source": "PureMac"
+  },
+  {
+    "id": "xcode.coresim.device.caches",
+    "title": "Caches inside simulators",
+    "category": "xcode",
+    "paths": [
+      "~/Library/Developer/CoreSimulator/Devices/*/data/Library/Caches"
+    ],
+    "globs": [
+      "*"
+    ],
+    "minAgeDays": 0,
+    "risk": "safe",
+    "why": "Caches that apps inside your simulators made. They rebuild them the next time they run.",
+    "requiresQuit": false,
+    "source": "mac-cleanup-py"
+  },
+  {
+    "id": "xcode.coresim.device.tmp",
+    "title": "Simulator temporary files",
+    "category": "xcode",
+    "paths": [
+      "~/Library/Developer/CoreSimulator/Devices/*/data/tmp"
+    ],
+    "globs": [
+      "*"
+    ],
+    "minAgeDays": 0,
+    "risk": "safe",
+    "why": "Temporary files left inside simulators. Apps make new ones as they run.",
+    "requiresQuit": false,
+    "source": "dustpan"
+  },
+  {
+    "id": "xcode.xctestdevices",
+    "title": "Test simulators",
+    "category": "xcode",
+    "paths": [
+      "~/Library/Developer/XCTestDevices"
+    ],
+    "globs": [
+      "*"
+    ],
+    "minAgeDays": 0,
+    "risk": "safe",
+    "why": "Simulator clones Xcode made for parallel testing. Xcode makes new ones when you run tests.",
+    "requiresQuit": false,
+    "source": "PureMac"
+  },
+  {
+    "id": "xcode.playgrounds",
+    "title": "Playground simulators",
+    "category": "xcode",
+    "paths": [
+      "~/Library/Developer/XCPGDevices"
+    ],
+    "globs": [
+      "*"
+    ],
+    "minAgeDays": 0,
+    "risk": "safe",
+    "why": "Simulators Xcode made to run playgrounds. Xcode makes them again when you run a playground.",
+    "requiresQuit": false,
+    "source": "dustpan"
+  },
+  {
+    "id": "xcode.instruments",
+    "title": "Instruments caches",
+    "category": "xcode",
+    "paths": [
+      "~/Library/Caches/com.apple.dt.instruments"
+    ],
+    "globs": [],
+    "minAgeDays": 0,
+    "risk": "safe",
+    "why": "Symbol caches Instruments keeps. It rebuilds them the next time you profile.",
+    "requiresQuit": false,
+    "source": "dustpan"
+  },
+  {
+    "id": "dev.npm.cache",
+    "title": "npm cache",
+    "category": "dev",
+    "paths": [
+      "~/.npm/_cacache"
+    ],
+    "globs": [],
+    "minAgeDays": 0,
+    "risk": "safe",
+    "why": "Every package npm downloaded, kept to install faster. npm downloads them again when needed.",
+    "requiresQuit": false,
+    "source": "mac-cleanup-py"
+  },
+  {
+    "id": "dev.npm.npx",
+    "title": "npx packages",
+    "category": "dev",
+    "paths": [
+      "~/.npm/_npx"
+    ],
+    "globs": [],
+    "minAgeDays": 0,
+    "risk": "safe",
+    "why": "Packages npx fetched to run one-off commands. npx fetches them again next time.",
+    "requiresQuit": false,
+    "source": "dustpan"
+  },
+  {
+    "id": "dev.npm.prebuilds",
+    "title": "npm prebuilt binaries",
+    "category": "dev",
+    "paths": [
+      "~/.npm/_prebuilds"
+    ],
+    "globs": [],
+    "minAgeDays": 0,
+    "risk": "safe",
+    "why": "Prebuilt native modules npm downloaded. npm downloads them again when needed.",
+    "requiresQuit": false,
+    "source": "dustpan"
+  },
+  {
+    "id": "dev.yarn",
+    "title": "Yarn cache",
+    "category": "dev",
+    "paths": [
+      "~/Library/Caches/Yarn",
+      "~/.yarn/berry/cache",
+      "~/.cache/yarn"
+    ],
+    "globs": [],
+    "minAgeDays": 0,
+    "risk": "safe",
+    "why": "Packages Yarn downloaded, kept to install faster. Yarn downloads them again when needed.",
+    "requiresQuit": false,
+    "source": "mac-cleanup-py"
+  },
+  {
+    "id": "dev.pnpm",
+    "title": "pnpm store",
+    "category": "dev",
+    "paths": [
+      "~/Library/pnpm/store",
+      "~/.pnpm-store",
+      "~/.cache/pnpm"
+    ],
+    "globs": [],
+    "minAgeDays": 0,
+    "risk": "review",
+    "why": "Packages pnpm downloaded once and linked into projects. Installed projects keep working; pnpm refetches the rest.",
+    "requiresQuit": false,
+    "source": "mac-cleanup-py"
+  },
+  {
+    "id": "dev.bun",
+    "title": "Bun cache",
+    "category": "dev",
+    "paths": [
+      "~/.bun/install/cache"
+    ],
+    "globs": [],
+    "minAgeDays": 0,
+    "risk": "safe",
+    "why": "Packages Bun downloaded, kept to install faster. Bun downloads them again when needed.",
+    "requiresQuit": false,
+    "source": "mac-cleanup-py"
+  },
+  {
+    "id": "dev.deno",
+    "title": "Deno cache",
+    "category": "dev",
+    "paths": [
+      "~/Library/Caches/deno",
+      "~/.cache/deno"
+    ],
+    "globs": [],
+    "minAgeDays": 0,
+    "risk": "safe",
+    "why": "Modules Deno downloaded and compiled. Deno fetches them again when a script needs them.",
+    "requiresQuit": false,
+    "source": "PureMac"
+  },
+  {
+    "id": "dev.node-gyp",
+    "title": "node-gyp headers",
+    "category": "dev",
+    "paths": [
+      "~/Library/Caches/node-gyp",
+      "~/.node-gyp",
+      "~/.cache/node-gyp"
+    ],
+    "globs": [],
+    "minAgeDays": 0,
+    "risk": "safe",
+    "why": "Node.js headers downloaded to build native modules. They download again when needed.",
+    "requiresQuit": false,
+    "source": "dustpan"
+  },
+  {
+    "id": "dev.electron",
+    "title": "Electron downloads",
+    "category": "dev",
+    "paths": [
+      "~/Library/Caches/electron",
+      "~/Library/Caches/electron-builder"
+    ],
+    "globs": [],
+    "minAgeDays": 0,
+    "risk": "safe",
+    "why": "Electron runtimes downloaded for building apps. They download again on the next build.",
+    "requiresQuit": false,
+    "source": "dustpan"
+  },
+  {
+    "id": "dev.cypress",
+    "title": "Cypress binaries",
+    "category": "dev",
+    "paths": [
+      "~/Library/Caches/Cypress"
+    ],
+    "globs": [],
+    "minAgeDays": 0,
+    "risk": "safe",
+    "why": "Test-runner apps Cypress downloaded. Cypress downloads the right version again when you install it.",
+    "requiresQuit": false,
+    "source": "dustpan"
+  },
+  {
+    "id": "dev.puppeteer",
+    "title": "Puppeteer browsers",
+    "category": "dev",
+    "paths": [
+      "~/.cache/puppeteer"
+    ],
+    "globs": [],
+    "minAgeDays": 0,
+    "risk": "review",
+    "why": "Browsers Puppeteer downloaded for testing. Reinstall with npm when you need them.",
+    "requiresQuit": false,
+    "source": "dustpan"
+  },
+  {
+    "id": "dev.typescript",
+    "title": "TypeScript cache",
+    "category": "dev",
+    "paths": [
+      "~/Library/Caches/typescript"
+    ],
+    "globs": [],
+    "minAgeDays": 0,
+    "risk": "safe",
+    "why": "Type definitions downloaded for editors. Editors download them again when needed.",
+    "requiresQuit": false,
+    "source": "dustpan"
+  },
+  {
+    "id": "dev.prisma",
+    "title": "Prisma engines",
+    "category": "dev",
+    "paths": [
+      "~/.cache/prisma"
+    ],
+    "globs": [],
+    "minAgeDays": 0,
+    "risk": "safe",
+    "why": "Database engine binaries Prisma downloaded. Prisma downloads them again on the next generate.",
+    "requiresQuit": false,
+    "source": "dustpan"
+  },
+  {
+    "id": "dev.pip",
+    "title": "pip cache",
+    "category": "dev",
+    "paths": [
+      "~/Library/Caches/pip",
+      "~/.cache/pip"
+    ],
+    "globs": [],
+    "minAgeDays": 0,
+    "risk": "safe",
+    "why": "Python packages pip downloaded, kept to install faster. pip downloads them again when needed.",
+    "requiresQuit": false,
+    "source": "PureMac"
+  },
+  {
+    "id": "dev.pipenv",
+    "title": "Pipenv cache",
+    "category": "dev",
+    "paths": [
+      "~/Library/Caches/pipenv"
+    ],
+    "globs": [],
+    "minAgeDays": 0,
+    "risk": "safe",
+    "why": "Python packages Pipenv downloaded. Pipenv downloads them again when needed.",
+    "requiresQuit": false,
+    "source": "dustpan"
+  },
+  {
+    "id": "dev.poetry.cache",
+    "title": "Poetry caches",
+    "category": "dev",
+    "paths": [
+      "~/Library/Caches/pypoetry/cache",
+      "~/Library/Caches/pypoetry/artifacts"
+    ],
+    "globs": [],
+    "minAgeDays": 0,
+    "risk": "safe",
+    "why": "Python packages Poetry downloaded. Poetry downloads them again when needed.",
+    "requiresQuit": false,
+    "source": "mac-cleanup-py"
+  },
+  {
+    "id": "dev.poetry.venvs",
+    "title": "Poetry virtual environments",
+    "category": "dev",
+    "paths": [
+      "~/Library/Caches/pypoetry/virtualenvs"
+    ],
+    "globs": [],
+    "minAgeDays": 0,
+    "risk": "review",
+    "why": "Python environments Poetry made for your projects. Run poetry install to make them again.",
+    "requiresQuit": false,
+    "source": "mac-cleanup-py"
+  },
+  {
+    "id": "dev.conda",
+    "title": "Conda package cache",
+    "category": "dev",
+    "paths": [
+      "~/miniconda3/pkgs",
+      "~/anaconda3/pkgs",
+      "~/miniforge3/pkgs",
+      "~/.conda/pkgs"
+    ],
+    "globs": [],
+    "minAgeDays": 0,
+    "risk": "review",
+    "why": "Package archives conda downloaded. Environments keep working; conda downloads them again if needed.",
+    "requiresQuit": false,
+    "source": "dustpan"
+  },
+  {
+    "id": "dev.pre-commit",
+    "title": "pre-commit environments",
+    "category": "dev",
+    "paths": [
+      "~/.cache/pre-commit"
+    ],
+    "globs": [],
+    "minAgeDays": 0,
+    "risk": "safe",
+    "why": "Hook environments pre-commit set up. It sets them up again on the next commit.",
+    "requiresQuit": false,
+    "source": "dustpan"
+  },
+  {
+    "id": "dev.homebrew.api",
+    "title": "Homebrew metadata",
+    "category": "dev",
+    "paths": [
+      "~/Library/Caches/Homebrew/api",
+      "~/Library/Caches/Homebrew/bootsnap"
+    ],
+    "globs": [],
+    "minAgeDays": 0,
+    "risk": "safe",
+    "why": "Package lists and boot caches Homebrew keeps. Homebrew downloads them again on the next update.",
+    "requiresQuit": false,
+    "source": "dustpan"
+  },
+  {
+    "id": "dev.cocoapods",
+    "title": "CocoaPods cache",
+    "category": "dev",
+    "paths": [
+      "~/Library/Caches/CocoaPods"
+    ],
+    "globs": [],
+    "minAgeDays": 0,
+    "risk": "safe",
+    "why": "Pods CocoaPods downloaded. pod install downloads them again when needed.",
+    "requiresQuit": false,
+    "source": "mac-cleanup-py"
+  },
+  {
+    "id": "dev.carthage",
+    "title": "Carthage cache",
+    "category": "dev",
+    "paths": [
+      "~/Library/Caches/org.carthage.CarthageKit"
+    ],
+    "globs": [],
+    "minAgeDays": 0,
+    "risk": "safe",
+    "why": "Frameworks Carthage downloaded and built. Carthage fetches them again on the next update.",
+    "requiresQuit": false,
+    "source": "dustpan"
+  },
+  {
+    "id": "dev.swiftpm",
+    "title": "Swift Package Manager cache",
+    "category": "dev",
+    "paths": [
+      "~/Library/Caches/org.swift.swiftpm"
+    ],
+    "globs": [],
+    "minAgeDays": 0,
+    "risk": "safe",
+    "why": "Swift packages downloaded for your projects. Xcode and swift build fetch them again.",
+    "requiresQuit": false,
+    "source": "PureMac"
+  },
+  {
+    "id": "dev.cargo.registry",
+    "title": "Cargo registry cache",
+    "category": "dev",
+    "paths": [
+      "~/.cargo/registry/cache",
+      "~/.cargo/registry/src"
+    ],
+    "globs": [],
+    "minAgeDays": 0,
+    "risk": "safe",
+    "why": "Rust crates Cargo downloaded and unpacked. Cargo downloads them again on the next build.",
+    "requiresQuit": false,
+    "source": "dustpan"
+  },
+  {
+    "id": "dev.cargo.git",
+    "title": "Cargo git checkouts",
+    "category": "dev",
+    "paths": [
+      "~/.cargo/git/checkouts"
+    ],
+    "globs": [],
+    "minAgeDays": 0,
+    "risk": "safe",
+    "why": "Git dependencies Cargo checked out. Cargo checks them out again on the next build.",
+    "requiresQuit": false,
+    "source": "dustpan"
+  },
+  {
+    "id": "dev.rustup",
+    "title": "rustup downloads",
+    "category": "dev",
+    "paths": [
+      "~/.rustup/downloads",
+      "~/.rustup/tmp"
+    ],
+    "globs": [],
+    "minAgeDays": 0,
+    "risk": "safe",
+    "why": "Leftover downloads from installing Rust toolchains. Your installed toolchains are not here.",
+    "requiresQuit": false,
+    "source": "dustpan"
+  },
+  {
+    "id": "dev.go.build",
+    "title": "Go build cache",
+    "category": "dev",
+    "paths": [
+      "~/Library/Caches/go-build"
+    ],
+    "globs": [],
+    "minAgeDays": 0,
+    "risk": "safe",
+    "why": "Compiled Go packages kept to build faster. Go rebuilds them on the next build.",
+    "requiresQuit": false,
+    "source": "PureMac"
+  },
+  {
+    "id": "dev.go.mod",
+    "title": "Go module cache",
+    "category": "dev",
+    "paths": [
+      "~/go/pkg/mod"
+    ],
+    "globs": [],
+    "minAgeDays": 0,
+    "risk": "review",
+    "why": "Go modules downloaded for your projects. Go fetches them again when you build; that needs a network.",
+    "requiresQuit": false,
+    "source": "mac-cleanup-py"
+  },
+  {
+    "id": "dev.gradle",
+    "title": "Gradle caches",
+    "category": "dev",
+    "paths": [
+      "~/.gradle/caches"
+    ],
+    "globs": [],
+    "minAgeDays": 0,
+    "risk": "safe",
+    "why": "Libraries and build outputs Gradle downloaded. Gradle downloads them again on the next build.",
+    "requiresQuit": false,
+    "source": "mac-cleanup-py"
+  },
+  {
+    "id": "dev.gradle.wrapper",
+    "title": "Gradle distributions",
+    "category": "dev",
+    "paths": [
+      "~/.gradle/wrapper/dists"
+    ],
+    "globs": [],
+    "minAgeDays": 0,
+    "risk": "review",
+    "why": "Gradle versions the wrapper downloaded. Projects download the version they need again.",
+    "requiresQuit": false,
+    "source": "dustpan"
+  },
+  {
+    "id": "dev.maven",
+    "title": "Maven repository",
+    "category": "dev",
+    "paths": [
+      "~/.m2/repository"
+    ],
+    "globs": [],
+    "minAgeDays": 0,
+    "risk": "review",
+    "why": "Java libraries Maven downloaded. Maven fetches them again, but locally installed builds would need rebuilding.",
+    "requiresQuit": false,
+    "source": "dustpan"
+  },
+  {
+    "id": "dev.android.cache",
+    "title": "Android build cache",
+    "category": "dev",
+    "paths": [
+      "~/.android/cache",
+      "~/.android/build-cache"
+    ],
+    "globs": [],
+    "minAgeDays": 0,
+    "risk": "safe",
+    "why": "Caches the Android tools keep. They rebuild them on the next build.",
+    "requiresQuit": false,
+    "source": "mac-cleanup-py"
+  },
+  {
+    "id": "dev.android.studio",
+    "title": "Android Studio caches",
+    "category": "dev",
+    "paths": [
+      "~/Library/Caches/Google/AndroidStudio*"
+    ],
+    "globs": [],
+    "minAgeDays": 0,
+    "risk": "safe",
+    "why": "Indexes and caches Android Studio keeps. It rebuilds them when you open a project.",
+    "requiresQuit": true,
+    "source": "dustpan",
+    "appBundleID": "com.google.android.studio"
+  },
+  {
+    "id": "dev.jetbrains",
+    "title": "JetBrains IDE caches",
+    "category": "dev",
+    "paths": [
+      "~/Library/Caches/JetBrains"
+    ],
+    "globs": [],
+    "minAgeDays": 0,
+    "risk": "safe",
+    "why": "Indexes and caches IntelliJ, PyCharm and other JetBrains IDEs keep. They rebuild them on the next launch.",
+    "requiresQuit": false,
+    "source": "PureMac"
+  },
+  {
+    "id": "dev.composer",
+    "title": "Composer cache",
+    "category": "dev",
+    "paths": [
+      "~/Library/Caches/composer",
+      "~/.composer/cache"
+    ],
+    "globs": [],
+    "minAgeDays": 0,
+    "risk": "safe",
+    "why": "PHP packages Composer downloaded. Composer downloads them again when needed.",
+    "requiresQuit": false,
+    "source": "mac-cleanup-py"
+  },
+  {
+    "id": "dev.bundler",
+    "title": "Bundler cache",
+    "category": "dev",
+    "paths": [
+      "~/.bundle/cache"
+    ],
+    "globs": [],
+    "minAgeDays": 0,
+    "risk": "safe",
+    "why": "Ruby gems Bundler downloaded. Bundler downloads them again when needed.",
+    "requiresQuit": false,
+    "source": "dustpan"
+  },
+  {
+    "id": "dev.nuget",
+    "title": "NuGet packages",
+    "category": "dev",
+    "paths": [
+      "~/.nuget/packages"
+    ],
+    "globs": [],
+    "minAgeDays": 0,
+    "risk": "review",
+    "why": ".NET packages NuGet downloaded. dotnet restore downloads them again.",
+    "requiresQuit": false,
+    "source": "mac-cleanup-py"
+  },
+  {
+    "id": "dev.conan",
+    "title": "Conan packages",
+    "category": "dev",
+    "paths": [
+      "~/.conan2/p"
+    ],
+    "globs": [],
+    "minAgeDays": 0,
+    "risk": "review",
+    "why": "C and C++ packages Conan downloaded or built. Conan fetches or builds them again when needed.",
+    "requiresQuit": false,
+    "source": "mac-cleanup-py"
+  },
+  {
+    "id": "dev.pub",
+    "title": "Dart and Flutter packages",
+    "category": "dev",
+    "paths": [
+      "~/.pub-cache/hosted"
+    ],
+    "globs": [],
+    "minAgeDays": 0,
+    "risk": "review",
+    "why": "Packages Dart and Flutter downloaded. flutter pub get downloads them again.",
+    "requiresQuit": false,
+    "source": "dustpan"
+  },
+  {
+    "id": "dev.cabal",
+    "title": "Cabal packages",
+    "category": "dev",
+    "paths": [
+      "~/.cabal/packages"
+    ],
+    "globs": [],
+    "minAgeDays": 0,
+    "risk": "review",
+    "why": "Haskell packages Cabal downloaded. Cabal downloads them again when needed.",
+    "requiresQuit": false,
+    "source": "dustpan"
+  },
+  {
+    "id": "dev.terraform",
+    "title": "Terraform plugin cache",
+    "category": "dev",
+    "paths": [
+      "~/.terraform.d/plugin-cache"
+    ],
+    "globs": [],
+    "minAgeDays": 0,
+    "risk": "safe",
+    "why": "Providers Terraform downloaded. terraform init downloads them again.",
+    "requiresQuit": false,
+    "source": "dustpan"
+  },
+  {
+    "id": "dev.ccache",
+    "title": "ccache",
+    "category": "dev",
+    "paths": [
+      "~/Library/Caches/ccache"
+    ],
+    "globs": [],
+    "minAgeDays": 0,
+    "risk": "safe",
+    "why": "Compiler outputs ccache keeps to rebuild C and C++ faster. Builds still work, just slower the first time.",
+    "requiresQuit": false,
+    "source": "dustpan"
+  },
+  {
+    "id": "dev.sccache",
+    "title": "sccache",
+    "category": "dev",
+    "paths": [
+      "~/Library/Caches/Mozilla.sccache"
+    ],
+    "globs": [],
+    "minAgeDays": 0,
+    "risk": "safe",
+    "why": "Compiler outputs sccache keeps to rebuild faster. Builds still work, just slower the first time.",
+    "requiresQuit": false,
+    "source": "dustpan"
+  },
+  {
+    "id": "dev.golangci",
+    "title": "golangci-lint cache",
+    "category": "dev",
+    "paths": [
+      "~/Library/Caches/golangci-lint"
+    ],
+    "globs": [],
+    "minAgeDays": 0,
+    "risk": "safe",
+    "why": "Lint results kept to check Go code faster. golangci-lint works them out again on the next run.",
+    "requiresQuit": false,
+    "source": "dustpan"
+  },
+  {
+    "id": "dev.docker.disk",
+    "title": "Docker disk image",
+    "category": "dev",
+    "paths": [
+      "~/Library/Containers/com.docker.docker/Data/vms"
+    ],
+    "globs": [],
+    "minAgeDays": 0,
+    "risk": "review",
+    "why": "Docker's virtual disk with your images and containers. Free space with docker system prune inside Docker instead.",
+    "requiresQuit": true,
+    "source": "PureMac",
+    "detectionOnly": true,
+    "appBundleID": "com.docker.docker",
+    "needsFullDiskAccess": true
+  },
+  {
+    "id": "dev.docker.cache",
+    "title": "Docker Desktop caches",
+    "category": "dev",
+    "paths": [
+      "~/Library/Containers/com.docker.docker/Data/cache",
+      "~/Library/Containers/com.docker.docker/Data/tmp"
+    ],
+    "globs": [],
+    "minAgeDays": 0,
+    "risk": "review",
+    "why": "Temporary files Docker Desktop keeps. Docker makes new ones as it runs.",
+    "requiresQuit": true,
+    "source": "PureMac",
+    "detectionOnly": true,
+    "appBundleID": "com.docker.docker",
+    "needsFullDiskAccess": true
+  },
+  {
+    "id": "dev.docker.buildx",
+    "title": "Docker CLI caches",
+    "category": "dev",
+    "paths": [
+      "~/.docker/buildx/cache",
+      "~/.docker/cli-plugins/.cache"
+    ],
+    "globs": [],
+    "minAgeDays": 0,
+    "risk": "review",
+    "detectionOnly": true,
+    "why": "Build caches from the Docker command-line tools. Clear them with docker buildx prune inside Docker instead.",
+    "requiresQuit": false,
+    "source": "PureMac"
+  },
+  {
+    "id": "dev.vagrant",
+    "title": "Vagrant boxes",
+    "category": "dev",
+    "paths": [
+      "~/.vagrant.d/boxes"
+    ],
+    "globs": [],
+    "minAgeDays": 0,
+    "risk": "review",
+    "why": "Base images Vagrant downloaded. Remove ones you no longer use with vagrant box remove.",
+    "requiresQuit": false,
+    "source": "dustpan"
+  },
+  {
+    "id": "dev.unity",
+    "title": "Unity cache",
+    "category": "dev",
+    "paths": [
+      "~/Library/Unity/cache"
+    ],
+    "globs": [],
+    "minAgeDays": 0,
+    "risk": "review",
+    "why": "Downloaded packages and assets Unity keeps. Unity downloads them again when a project needs them.",
+    "requiresQuit": false,
+    "source": "dustpan"
+  },
+  {
+    "id": "dev.hprof",
+    "title": "Java heap dumps",
+    "category": "dev",
+    "paths": [
+      "~"
+    ],
+    "globs": [
+      "*.hprof"
+    ],
+    "minAgeDays": 7,
+    "risk": "safe",
+    "why": "Memory snapshots Java apps saved after a crash. Only useful while debugging that crash.",
+    "requiresQuit": false,
+    "source": "mac-cleanup-py"
+  },
+  {
+    "id": "dev.orbstack.cache",
+    "title": "OrbStack cache",
+    "category": "dev",
+    "paths": [
+      "~/Library/Caches/dev.kdrag0n.MacVirt"
+    ],
+    "globs": [],
+    "minAgeDays": 0,
+    "risk": "safe",
+    "why": "Caches OrbStack keeps. Your containers and machines are not stored here.",
+    "requiresQuit": false,
+    "source": "PureMac"
+  },
+  {
+    "id": "ai.cursor.cache",
+    "title": "Cursor caches",
+    "category": "ai",
+    "paths": [
+      "~/Library/Application Support/Cursor/Cache",
+      "~/Library/Application Support/Cursor/Code Cache",
+      "~/Library/Application Support/Cursor/GPUCache"
+    ],
+    "globs": [],
+    "minAgeDays": 0,
+    "risk": "safe",
+    "why": "Web and graphics caches the Cursor editor keeps. Cursor rebuilds them; your code is not touched.",
+    "requiresQuit": true,
+    "source": "PureMac",
+    "appBundleID": "com.todesktop.230313mzl4w4u92",
+    "needsFullDiskAccess": true
+  },
+  {
+    "id": "ai.cursor.cacheddata",
+    "title": "Cursor CachedData",
+    "category": "ai",
+    "paths": [
+      "~/Library/Application Support/Cursor/CachedData"
+    ],
+    "globs": [],
+    "minAgeDays": 0,
+    "risk": "safe",
+    "why": "Compiled code from earlier Cursor versions. Cursor makes new copies when it starts.",
+    "requiresQuit": true,
+    "source": "PureMac",
+    "appBundleID": "com.todesktop.230313mzl4w4u92",
+    "needsFullDiskAccess": true
+  },
+  {
+    "id": "ai.cursor.vsix",
+    "title": "Cursor extension downloads",
+    "category": "ai",
+    "paths": [
+      "~/Library/Application Support/Cursor/CachedExtensionVSIXs"
+    ],
+    "globs": [],
+    "minAgeDays": 0,
+    "risk": "safe",
+    "why": "Extension installers Cursor downloaded. Installed extensions keep working.",
+    "requiresQuit": true,
+    "source": "dustpan",
+    "appBundleID": "com.todesktop.230313mzl4w4u92",
+    "needsFullDiskAccess": true
+  },
+  {
+    "id": "ai.cursor.logs",
+    "title": "Cursor logs",
+    "category": "ai",
+    "paths": [
+      "~/Library/Application Support/Cursor/logs"
+    ],
+    "globs": [],
+    "minAgeDays": 7,
+    "risk": "safe",
+    "why": "Session logs from Cursor. It writes new ones each time it starts.",
+    "requiresQuit": false,
+    "source": "PureMac",
+    "needsFullDiskAccess": true
+  },
+  {
+    "id": "ai.cursor.caches",
+    "title": "Cursor app cache",
+    "category": "ai",
+    "paths": [
+      "~/Library/Caches/com.todesktop.230313mzl4w4u92",
+      "~/Library/Caches/cursor-compile-cache"
+    ],
+    "globs": [],
+    "minAgeDays": 0,
+    "risk": "safe",
+    "why": "Update and compile caches for Cursor. Cursor makes them again.",
+    "requiresQuit": false,
+    "source": "dustpan"
+  },
+  {
+    "id": "ai.vscode.cacheddata",
+    "title": "VS Code CachedData",
+    "category": "ai",
+    "paths": [
+      "~/Library/Application Support/Code/CachedData"
+    ],
+    "globs": [],
+    "minAgeDays": 0,
+    "risk": "safe",
+    "why": "Compiled code from earlier VS Code versions. VS Code makes new copies when it starts.",
+    "requiresQuit": true,
+    "source": "PureMac",
+    "appBundleID": "com.microsoft.VSCode",
+    "needsFullDiskAccess": true
+  },
+  {
+    "id": "ai.vscode.vsix",
+    "title": "VS Code extension downloads",
+    "category": "ai",
+    "paths": [
+      "~/Library/Application Support/Code/CachedExtensionVSIXs"
+    ],
+    "globs": [],
+    "minAgeDays": 0,
+    "risk": "safe",
+    "why": "Extension installers VS Code downloaded. Installed extensions keep working.",
+    "requiresQuit": true,
+    "source": "PureMac",
+    "appBundleID": "com.microsoft.VSCode",
+    "needsFullDiskAccess": true
+  },
+  {
+    "id": "ai.vscode.cache",
+    "title": "VS Code caches",
+    "category": "ai",
+    "paths": [
+      "~/Library/Application Support/Code/Cache",
+      "~/Library/Application Support/Code/Code Cache",
+      "~/Library/Application Support/Code/GPUCache"
+    ],
+    "globs": [],
+    "minAgeDays": 0,
+    "risk": "safe",
+    "why": "Web and graphics caches VS Code keeps. VS Code rebuilds them; your code is not touched.",
+    "requiresQuit": true,
+    "source": "PureMac",
+    "appBundleID": "com.microsoft.VSCode",
+    "needsFullDiskAccess": true
+  },
+  {
+    "id": "ai.vscode.insiders",
+    "title": "VS Code Insiders CachedData",
+    "category": "ai",
+    "paths": [
+      "~/Library/Application Support/Code - Insiders/CachedData",
+      "~/Library/Application Support/Code - Insiders/CachedExtensionVSIXs"
+    ],
+    "globs": [],
+    "minAgeDays": 0,
+    "risk": "safe",
+    "why": "Compiled code and extension downloads from VS Code Insiders. It makes new ones when it starts.",
+    "requiresQuit": true,
+    "source": "dustpan",
+    "appBundleID": "com.microsoft.VSCodeInsiders",
+    "needsFullDiskAccess": true
+  },
+  {
+    "id": "ai.windsurf",
+    "title": "Windsurf caches",
+    "category": "ai",
+    "paths": [
+      "~/Library/Application Support/Windsurf/CachedData",
+      "~/Library/Application Support/Windsurf/CachedExtensionVSIXs",
+      "~/Library/Application Support/Windsurf/Cache",
+      "~/Library/Application Support/Windsurf/Code Cache",
+      "~/Library/Application Support/Windsurf/GPUCache"
+    ],
+    "globs": [],
+    "minAgeDays": 0,
+    "risk": "safe",
+    "why": "Compiled code, extension downloads and web caches from Windsurf. It rebuilds them when it starts.",
+    "requiresQuit": true,
+    "source": "dustpan",
+    "appBundleID": "com.exafunction.windsurf",
+    "needsFullDiskAccess": true
+  },
+  {
+    "id": "ai.windsurf.logs",
+    "title": "Windsurf logs",
+    "category": "ai",
+    "paths": [
+      "~/Library/Application Support/Windsurf/logs"
+    ],
+    "globs": [],
+    "minAgeDays": 7,
+    "risk": "safe",
+    "why": "Session logs from Windsurf. It writes new ones each time it starts.",
+    "requiresQuit": false,
+    "source": "dustpan",
+    "needsFullDiskAccess": true
+  },
+  {
+    "id": "ai.zed",
+    "title": "Zed cache",
+    "category": "ai",
+    "paths": [
+      "~/Library/Caches/Zed",
+      "~/Library/Caches/dev.zed.Zed"
+    ],
+    "globs": [],
+    "minAgeDays": 0,
+    "risk": "safe",
+    "why": "Downloads and caches the Zed editor keeps. Zed fetches them again when needed.",
+    "requiresQuit": false,
+    "source": "dustpan"
+  },
+  {
+    "id": "ai.claude.cache",
+    "title": "Claude app caches",
+    "category": "ai",
+    "paths": [
+      "~/Library/Application Support/Claude/Cache",
+      "~/Library/Application Support/Claude/Code Cache",
+      "~/Library/Application Support/Claude/GPUCache",
+      "~/Library/Application Support/Claude/DawnGraphiteCache",
+      "~/Library/Application Support/Claude/DawnWebGPUCache"
+    ],
+    "globs": [],
+    "minAgeDays": 0,
+    "risk": "safe",
+    "why": "Web and graphics caches the Claude desktop app keeps. It rebuilds them; your chats are stored online.",
+    "requiresQuit": true,
+    "source": "dustpan",
+    "appBundleID": "com.anthropic.claudefordesktop",
+    "needsFullDiskAccess": true
+  },
+  {
+    "id": "ai.claude.caches",
+    "title": "Claude app cache",
+    "category": "ai",
+    "paths": [
+      "~/Library/Caches/com.anthropic.claudefordesktop"
+    ],
+    "globs": [],
+    "minAgeDays": 0,
+    "risk": "safe",
+    "why": "Downloads the Claude desktop app keeps. It fetches them again when needed.",
+    "requiresQuit": false,
+    "source": "dustpan"
+  },
+  {
+    "id": "ai.claude.cli",
+    "title": "Claude Code cache",
+    "category": "ai",
+    "paths": [
+      "~/Library/Caches/claude-cli-nodejs"
+    ],
+    "globs": [],
+    "minAgeDays": 0,
+    "risk": "safe",
+    "why": "Logs and temporary files from the Claude Code command-line tool. It makes new ones as it runs.",
+    "requiresQuit": false,
+    "source": "dustpan"
+  },
+  {
+    "id": "ai.chatgpt",
+    "title": "ChatGPT app cache",
+    "category": "ai",
+    "paths": [
+      "~/Library/Caches/com.openai.chat"
+    ],
+    "globs": [],
+    "minAgeDays": 0,
+    "risk": "safe",
+    "why": "Images and web data the ChatGPT app keeps. It fetches them again; your chats are stored online.",
+    "requiresQuit": false,
+    "source": "dustpan"
+  },
+  {
+    "id": "ai.gemini",
+    "title": "Gemini app cache",
+    "category": "ai",
+    "paths": [
+      "~/Library/Caches/com.google.GeminiMacOS"
+    ],
+    "globs": [],
+    "minAgeDays": 0,
+    "risk": "safe",
+    "why": "Web data the Gemini app keeps. It fetches it again when needed.",
+    "requiresQuit": false,
+    "source": "dustpan"
+  },
+  {
+    "id": "ai.copilot",
+    "title": "GitHub Copilot cache",
+    "category": "ai",
+    "paths": [
+      "~/Library/Caches/com.github.CopilotForXcode",
+      "~/.cache/github-copilot"
+    ],
+    "globs": [],
+    "minAgeDays": 0,
+    "risk": "safe",
+    "why": "Downloads and caches GitHub Copilot keeps. It fetches them again when needed.",
+    "requiresQuit": false,
+    "source": "dustpan"
+  },
+  {
+    "id": "ai.ollama.logs",
+    "title": "Ollama logs",
+    "category": "ai",
+    "paths": [
+      "~/.ollama/logs"
+    ],
+    "globs": [],
+    "minAgeDays": 7,
+    "risk": "safe",
+    "why": "Logs from Ollama. Your models are separate and stay put.",
+    "requiresQuit": false,
+    "source": "PureMac"
+  },
+  {
+    "id": "ai.ollama.cache",
+    "title": "Ollama app cache",
+    "category": "ai",
+    "paths": [
+      "~/Library/Caches/ollama",
+      "~/Library/Caches/com.electron.ollama"
+    ],
+    "globs": [],
+    "minAgeDays": 0,
+    "risk": "safe",
+    "why": "Caches the Ollama app keeps. Your models are separate and stay put.",
+    "requiresQuit": false,
+    "source": "PureMac"
+  },
+  {
+    "id": "ai.playwright",
+    "title": "Playwright browsers",
+    "category": "ai",
+    "paths": [
+      "~/Library/Caches/ms-playwright",
+      "~/Library/Caches/ms-playwright-go"
+    ],
+    "globs": [],
+    "minAgeDays": 0,
+    "risk": "review",
+    "why": "Browsers Playwright downloaded for tests and AI agents. Reinstall with npx playwright install when needed.",
+    "requiresQuit": false,
+    "source": "dustpan"
+  },
+  {
+    "id": "ai.uv",
+    "title": "uv cache",
+    "category": "ai",
+    "paths": [
+      "~/.cache/uv",
+      "~/Library/Caches/uv"
+    ],
+    "globs": [],
+    "minAgeDays": 0,
+    "risk": "safe",
+    "why": "Python packages uv downloaded, kept to install faster. uv downloads them again when needed.",
+    "requiresQuit": false,
+    "source": "PureMac"
+  },
+  {
+    "id": "ai.huggingface",
+    "title": "Hugging Face models",
+    "category": "ai",
+    "paths": [
+      "~/.cache/huggingface/hub"
+    ],
+    "globs": [],
+    "minAgeDays": 0,
+    "risk": "review",
+    "why": "Models downloaded from Hugging Face. They can be very large to fetch again, so keep ones you use.",
+    "requiresQuit": false,
+    "source": "dustpan"
+  },
+  {
+    "id": "ai.huggingface.datasets",
+    "title": "Hugging Face datasets",
+    "category": "ai",
+    "paths": [
+      "~/.cache/huggingface/datasets"
+    ],
+    "globs": [],
+    "minAgeDays": 0,
+    "risk": "review",
+    "why": "Datasets downloaded from Hugging Face. Keep ones you still train or test with.",
+    "requiresQuit": false,
+    "source": "dustpan"
+  },
+  {
+    "id": "ai.huggingface.xet",
+    "title": "Hugging Face download cache",
+    "category": "ai",
+    "paths": [
+      "~/.cache/huggingface/xet"
+    ],
+    "globs": [],
+    "minAgeDays": 0,
+    "risk": "safe",
+    "why": "Pieces of files kept so repeat Hugging Face downloads finish sooner. Downloads still work without them.",
+    "requiresQuit": false,
+    "source": "dustpan"
+  },
+  {
+    "id": "ai.torch",
+    "title": "PyTorch hub cache",
+    "category": "ai",
+    "paths": [
+      "~/.cache/torch"
+    ],
+    "globs": [],
+    "minAgeDays": 0,
+    "risk": "review",
+    "why": "Models and weights PyTorch downloaded. Code that needs them downloads them again.",
+    "requiresQuit": false,
+    "source": "dustpan"
+  },
+  {
+    "id": "ai.whisper",
+    "title": "Whisper models",
+    "category": "ai",
+    "paths": [
+      "~/.cache/whisper"
+    ],
+    "globs": [],
+    "minAgeDays": 0,
+    "risk": "review",
+    "why": "Speech models Whisper downloaded. It downloads them again the next time you transcribe.",
+    "requiresQuit": false,
+    "source": "dustpan"
+  },
+  {
+    "id": "ai.codex",
+    "title": "Codex CLI logs",
+    "category": "ai",
+    "paths": [
+      "~/.codex/log"
+    ],
+    "globs": [],
+    "minAgeDays": 7,
+    "risk": "safe",
+    "why": "Logs from the Codex command-line tool. It writes new ones as it runs.",
+    "requiresQuit": false,
+    "source": "dustpan"
+  },
+  {
+    "id": "ai.opencode",
+    "title": "opencode cache",
+    "category": "ai",
+    "paths": [
+      "~/.cache/opencode"
+    ],
+    "globs": [],
+    "minAgeDays": 0,
+    "risk": "safe",
+    "why": "Packages and data the opencode tool downloaded. It fetches them again when needed.",
+    "requiresQuit": false,
+    "source": "dustpan"
+  },
+  {
+    "id": "ai.antigravity",
+    "title": "Antigravity caches",
+    "category": "ai",
+    "paths": [
+      "~/Library/Application Support/Antigravity/CachedData",
+      "~/Library/Application Support/Antigravity/Cache",
+      "~/Library/Application Support/Antigravity/Code Cache",
+      "~/Library/Application Support/Antigravity/GPUCache"
+    ],
+    "globs": [],
+    "minAgeDays": 0,
+    "risk": "safe",
+    "why": "Compiled code and web caches from the Antigravity editor. It rebuilds them when it starts.",
+    "requiresQuit": true,
+    "source": "dustpan",
+    "appBundleID": "com.google.antigravity",
+    "needsFullDiskAccess": true
+  },
+  {
+    "id": "ai.lmstudio.cache",
+    "title": "LM Studio app caches",
+    "category": "ai",
+    "paths": [
+      "~/Library/Application Support/LM Studio/Cache",
+      "~/Library/Application Support/LM Studio/Code Cache",
+      "~/Library/Application Support/LM Studio/GPUCache"
+    ],
+    "globs": [],
+    "minAgeDays": 0,
+    "risk": "safe",
+    "why": "Web and graphics caches the LM Studio app keeps. Your models are separate and stay put.",
+    "requiresQuit": true,
+    "source": "dustpan",
+    "appBundleID": "ai.elementlabs.lmstudio",
+    "needsFullDiskAccess": true
+  },
+  {
+    "id": "ai.perplexity",
+    "title": "Perplexity app cache",
+    "category": "ai",
+    "paths": [
+      "~/Library/Caches/ai.perplexity.mac"
+    ],
+    "globs": [],
+    "minAgeDays": 0,
+    "risk": "safe",
+    "why": "Web data the Perplexity app keeps. It fetches it again when needed.",
+    "requiresQuit": false,
+    "source": "dustpan"
+  },
+  {
+    "id": "ai.jupyter",
+    "title": "Jupyter runtime files",
+    "category": "ai",
+    "paths": [
+      "~/Library/Jupyter/runtime"
+    ],
+    "globs": [],
+    "minAgeDays": 7,
+    "risk": "safe",
+    "why": "Connection files left by Jupyter kernels that have stopped. Running kernels make new ones.",
+    "requiresQuit": false,
+    "source": "dustpan"
+  }
+]

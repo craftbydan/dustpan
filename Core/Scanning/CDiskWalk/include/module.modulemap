@@ -1,0 +1,4 @@
+module CDiskWalk {
+    header "cdiskwalk.h"
+    export *
+}
