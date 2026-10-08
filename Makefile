@@ -50,6 +50,10 @@ install: Config.xcconfig
 # Ad-hoc signed and not notarized: fine on this Mac; other Macs will refuse to open it.
 VERSION := $(shell grep -m1 'MARKETING_VERSION' project.yml | sed -E 's/.*"(.*)".*/\1/')
 DMG     := dist/Dustpan-$(VERSION).dmg
+# The site's download button points at the GitHub release, not a copy hosted with the page.
+GITHUB_REPO  := craftbydan/dustpan
+DMG_URL      := https://github.com/$(GITHUB_REPO)/releases/download/v$(VERSION)/$(notdir $(DMG))
+RELEASE_PAGE := https://github.com/$(GITHUB_REPO)/releases/tag/v$(VERSION)
 dmg: Config.xcconfig
 	$(XCODEBUILD) -configuration Release build
 	rm -rf dist/stage $(DMG) && mkdir -p dist/stage
@@ -61,24 +65,32 @@ dmg: Config.xcconfig
 	rm -rf dist/stage
 	@echo "Built $(DMG)"
 
-# Landing page in site/: copies the DMG, the rule book and the app icon next to index.html
-# and writes release.json (version, size, SHA-256) for the download box. Run `make dmg` first.
+# Landing page in site/: copies the rule book and licences next to index.html, writes
+# release.json (version, size, SHA-256, GitHub download URL) and updates the download box.
+# The DMG itself is served from the GitHub release. Run `make dmg` first.
 site:
 	@test -f $(DMG) || { echo "No $(DMG) — run make dmg first"; exit 1; }
 	rm -f site/Dustpan-*.dmg
-	cp $(DMG) site/
 	cp Core/Rules/rules.json site/rules.json
 	mkdir -p site/licenses
 	cp THIRD_PARTY_NOTICES.md site/licenses/THIRD_PARTY_NOTICES.txt
 	cp Core/Rules/RULES_ATTRIBUTION.md site/licenses/RULES_ATTRIBUTION.txt
 	cp DesignSystem/Fonts/Archivo-OFL.txt site/licenses/Archivo-OFL.txt
 	cp LICENSE site/licenses/LICENSE.txt
-	printf '{"version":"%s","file":"%s","bytes":%s,"sha256":"%s"}\n' \
+	printf '{"version":"%s","file":"%s","bytes":%s,"sha256":"%s","url":"%s","page":"%s"}\n' \
 		"$(VERSION)" "$(notdir $(DMG))" "$$(stat -f %z $(DMG))" \
-		"$$(shasum -a 256 $(DMG) | cut -d' ' -f1)" > site/release.json
-	# The page also shows the checksum without JavaScript; keep that copy in step.
-	sed -i '' -E "s#(<code id=\"shaValue\">)[0-9a-f]{64}#\1$$(shasum -a 256 $(DMG) | cut -d' ' -f1)#" site/index.html
+		"$$(shasum -a 256 $(DMG) | cut -d' ' -f1)" "$(DMG_URL)" "$(RELEASE_PAGE)" > site/release.json
+	# The page also works without JavaScript; keep its static copy of the details in step.
+	sed -i '' -E \
+		-e "s#(<code id=\"shaValue\">)[0-9a-f]{64}#\1$$(shasum -a 256 $(DMG) | cut -d' ' -f1)#" \
+		-e "s#https://github.com/$(GITHUB_REPO)/releases/download/[^\"]+#$(DMG_URL)#" \
+		-e "s#https://github.com/$(GITHUB_REPO)/releases/tag/[^\"]+#$(RELEASE_PAGE)#" \
+		-e "s#(<span id=\"relVersion\">)[^<]*#\1$(VERSION)#" \
+		-e "s#(<span id=\"relFile\">)[^<]*#\1$(notdir $(DMG))#" \
+		-e "s#(<span id=\"relSize\">)[^<]*#\1$$(stat -f %z $(DMG) | awk '{printf "%.1f MB", $$1/1e6}')#" \
+		site/index.html
 	@cat site/release.json
+	@echo "Upload $(DMG) to the $(VERSION) GitHub release (see $(RELEASE_PAGE)), then publish site/."
 
 clean:
 	rm -rf $(DERIVED_DATA)

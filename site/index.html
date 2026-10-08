@@ -601,10 +601,10 @@ footer .wrap { display: flex; justify-content: space-between; gap: 18px; flex-wr
           <img src="img/icon.png" alt="" width="72" height="72">
           <div>
             <h3>Dustpan <span id="relVersion">0.1.0</span></h3>
-            <p class="meta"><span id="relSize">9.3 MB</span> · macOS 14 Sonoma or later · Apple silicon and Intel</p>
+            <p class="meta"><span id="relSize">9.9 MB</span> · macOS 14 Sonoma or later · Apple silicon and Intel</p>
           </div>
         </div>
-        <a class="btn primary" id="dlLink" href="Dustpan-0.1.0.dmg" download>
+        <a class="btn primary" id="dlLink" href="https://github.com/craftbydan/dustpan/releases/download/v0.1.0/Dustpan-0.1.0.dmg">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m0 0-5-5m5 5 5-5M4 20h16"/></svg>
           Download the disk image
         </a>
@@ -623,6 +623,7 @@ footer .wrap { display: flex; justify-content: space-between; gap: 18px; flex-wr
             <button class="btn small" type="button" id="copySha">Copy</button>
           </div>
           <span class="cmd">In Terminal: shasum -a 256 ~/Downloads/<span id="relFile">Dustpan-0.1.0.dmg</span></span>
+          <span class="muted">The download comes from <a id="relPage" href="https://github.com/craftbydan/dustpan/releases/tag/v0.1.0">Dustpan's release on GitHub</a>, which lists the same checksum.</span>
         </div>
       </div>
     </div>
@@ -958,7 +959,8 @@ footer .wrap { display: flex; justify-content: space-between; gap: 18px; flex-wr
     document.getElementById("relSize").textContent = fmt(rel.bytes);
     document.getElementById("shaValue").textContent = rel.sha256;
     document.getElementById("relFile").textContent = rel.file;
-    document.getElementById("dlLink").href = rel.file;
+    document.getElementById("dlLink").href = rel.url || rel.file;
+    if (rel.page) document.getElementById("relPage").href = rel.page;
   }).catch(() => {});
 
   document.getElementById("copySha").addEventListener("click", e => {
