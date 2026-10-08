@@ -27,7 +27,7 @@ struct SweepView: View {
                 CleanConfirmSheet(
                     bytes: model.recommendedBytes, lines: model.recommendedSummary,
                     note:
-                        "Only caches and logs marked safe, untouched for a week. Apps, leftovers, duplicates and big files stay put. Everything goes to the Trash, and History can put it back.",
+                        "Only caches and logs marked safe, untouched for a week. Apps, leftovers, duplicates and big files stay put. Everything goes to the Trash, and History can put it back until the Trash is emptied.",
                     onCancel: { model.isConfirming = false },
                     onConfirm: { Task { await model.confirmClean() } })
             } else if let app = model.quitPrompt {

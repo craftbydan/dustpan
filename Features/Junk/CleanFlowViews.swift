@@ -18,7 +18,7 @@ struct BlockedSection {
 struct CleanConfirmSheet: View {
     let bytes: Int64
     let lines: [JunkModel.CategorySummary]
-    var note = "Everything goes to the Trash. You can put it back from History."
+    var note = "Everything goes to the Trash. You can put it back from History until the Trash is emptied."
     var blocked: BlockedSection?
     let onCancel: () -> Void
     let onConfirm: () -> Void
@@ -186,7 +186,7 @@ struct CleanResultView: View {
                         }
                         if !report.moved.isEmpty {
                             Text(
-                                "\(report.moved.count == 1 ? "1 item" : "\(report.moved.count) items") moved. Apps rebuild what they need, and History can put anything back."
+                                "\(report.moved.count == 1 ? "1 item" : "\(report.moved.count) items") moved. Apps rebuild what they need, and History can put them back until the Trash is emptied."
                             )
                             .textStyle(.body)
                             .fixedSize(horizontal: false, vertical: true)

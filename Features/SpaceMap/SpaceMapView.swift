@@ -25,7 +25,7 @@ struct SpaceMapView: View {
                 QuietBanner(
                     systemImage: "trash",
                     message:
-                        "Moved \(move.count == 1 ? "“\(move.name)”" : move.name) (\(Self.bytes(move.bytes))) to the Trash. History can put it back later.",
+                        "Moved \(move.count == 1 ? "“\(move.name)”" : move.name) (\(Self.bytes(move.bytes))) to the Trash. History can put it back until the Trash is emptied.",
                     actionTitle: "Undo",
                     action: { Task { await model.undoLastMove() } }
                 )
@@ -317,7 +317,7 @@ private struct SelectionBar: View {
             Text(
                 isEmpty
                     ? "⌘-click to pick more than one. Everything goes to the Trash first."
-                    : "Everything goes to the Trash first. History can put it back."
+                    : "Everything goes to the Trash first. History can put it back until the Trash is emptied."
             )
             .textStyle(.caption)
             .lineLimit(1)
@@ -628,8 +628,13 @@ private struct TreemapCanvas: View {
             let sizeText = context.resolve(
                 Text(SpaceMapView.bytes(entry.size)).font(Typo.caption.monospacedDigit()).foregroundStyle(
                     textColor.opacity(0.85)))
-            clipped.draw(
-                sizeText, at: CGPoint(x: tile.minX + padding, y: tile.minY + Space.xs + Space.m), anchor: .topLeading)
+            // Only when it fits whole: a clipped "196.2 MB" reads as "196.2 MI".
+            let room = tile.width - padding * 2
+            if sizeText.measure(in: CGSize(width: CGFloat.greatestFiniteMagnitude, height: tile.height)).width <= room {
+                clipped.draw(
+                    sizeText, at: CGPoint(x: tile.minX + padding, y: tile.minY + Space.xs + Space.m),
+                    anchor: .topLeading)
+            }
         }
     }
 

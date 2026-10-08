@@ -84,7 +84,7 @@ struct ClutterBanners: View {
                 QuietBanner(
                     systemImage: "trash",
                     message:
-                        "Moved \(moved.count == 1 ? "1 file" : "\(moved.count) files") (\(ByteFormat.string(moved.bytes))) to the Trash. History can put them back later.",
+                        "Moved \(moved.count == 1 ? "1 file" : "\(moved.count) files") (\(ByteFormat.string(moved.bytes))) to the Trash. History can put them back until the Trash is emptied.",
                     actionTitle: "Undo", action: undo)
             }
         }

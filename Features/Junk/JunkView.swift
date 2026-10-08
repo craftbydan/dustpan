@@ -556,7 +556,10 @@ private struct CleanBar: View {
             InkButton("Select all safe", kind: .secondary, size: .small) { model.selectAllSafe() }
                 .disabled(!model.canSelectAllSafe || model.isCleaning)
                 .accessibilityHint("Ticks every item marked safe, in every category, except ones whose app is open")
-            InkButton("Move \(ByteFormat.string(model.selectedBytes)) to Trash", systemImage: "trash") {
+            InkButton(
+                model.selectedBytes == 0 ? "Move to Trash" : "Move \(ByteFormat.string(model.selectedBytes)) to Trash",
+                systemImage: "trash"
+            ) {
                 model.requestClean()
             }
             .disabled(count == 0 || model.isCleaning)

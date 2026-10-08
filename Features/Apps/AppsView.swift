@@ -596,7 +596,11 @@ private struct OrphanBar: View {
                 Text("Everything goes to the Trash first.").textStyle(.caption)
             }
             Spacer(minLength: Space.m)
-            InkButton("Move \(ByteFormat.string(model.selectedOrphanBytes)) to Trash", systemImage: "trash") {
+            InkButton(
+                model.selectedOrphanBytes == 0
+                    ? "Move to Trash" : "Move \(ByteFormat.string(model.selectedOrphanBytes)) to Trash",
+                systemImage: "trash"
+            ) {
                 model.requestRemoveOrphans()
             }
             .disabled(count == 0 || model.isWorking)
@@ -757,7 +761,7 @@ private struct ConfirmUninstallSheet: View {
                         detail: "caches, settings and other files", bytes: leftovers.reduce(0) { $0 + $1.size })
                 }
             }
-            Text("Everything goes to the Trash. You can put it back from History.")
+            Text("Everything goes to the Trash. You can put it back from History until the Trash is emptied.")
                 .textStyle(.body)
                 .fixedSize(horizontal: false, vertical: true)
             HStack(spacing: Space.m) {
@@ -818,9 +822,11 @@ private struct GoneLeftoversSheet: View {
                     }
                 }
                 .frame(maxHeight: Metric.sheetListMaxHeight)
-                Text("Guesses start unticked. Everything goes to the Trash; History can put it back.")
-                    .textStyle(.caption)
-                    .fixedSize(horizontal: false, vertical: true)
+                Text(
+                    "Guesses start unticked. Everything goes to the Trash; History can put it back until the Trash is emptied."
+                )
+                .textStyle(.caption)
+                .fixedSize(horizontal: false, vertical: true)
             }
             HStack(spacing: Space.m) {
                 Spacer(minLength: 0)
@@ -848,7 +854,7 @@ private struct ConfirmOrphansSheet: View {
         let count = model.selectedOrphans.count
         InkSheet(title: "Move \(ByteFormat.string(model.selectedOrphanBytes)) to the Trash?", onCancel: cancel) {
             Text(
-                "\(count == 1 ? "1 item" : "\(count) items") from apps that are no longer installed. Everything goes to the Trash. You can put it back from History."
+                "\(count == 1 ? "1 item" : "\(count) items") from apps that are no longer installed. Everything goes to the Trash. You can put it back from History until the Trash is emptied."
             )
             .textStyle(.body)
             .fixedSize(horizontal: false, vertical: true)
