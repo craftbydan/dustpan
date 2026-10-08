@@ -11,7 +11,7 @@ XCODEBUILD   := xcodebuild -project Dustpan.xcodeproj -scheme $(SCHEME) -destina
 APP          := $(DERIVED_DATA)/Build/Products/Debug/Dustpan.app
 LINT_PATHS   := App Core DesignSystem Features Tests
 
-.PHONY: all project build test lint format run clean install dmg site pages
+.PHONY: all project build test lint format run clean install dmg site pages og
 
 all: build
 
@@ -99,6 +99,14 @@ pages:
 	git subtree split --prefix site -b gh-pages-build
 	git push origin gh-pages-build:gh-pages
 	git branch -D gh-pages-build
+
+# Link-preview image (site/og.png, 1200×630) rendered from Scripts/og/og.html with headless Chrome.
+CHROME ?= /Applications/Google Chrome.app/Contents/MacOS/Google Chrome
+og:
+	"$(CHROME)" --headless=new --disable-gpu --hide-scrollbars --allow-file-access-from-files \
+		--force-device-scale-factor=1 --window-size=1200,630 --virtual-time-budget=3000 \
+		--screenshot=site/og.png "file://$(CURDIR)/Scripts/og/og.html" 2>/dev/null
+	@ls -l site/og.png
 
 clean:
 	rm -rf $(DERIVED_DATA)

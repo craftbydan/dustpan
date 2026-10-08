@@ -1,0 +1,72 @@
+<!doctype html>
+<!-- Source of site/og.png (1200×630 link preview). Render with `make og`. -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<style>
+@font-face { font-family: "Archivo"; src: url("../../site/fonts/archivo.woff2") format("woff2"); font-weight: 100 900; }
+:root {
+  --paper: #F6F1E7; --surface: #FBF8F1; --ink: #141210; --muted: #6B6459;
+  --tomato: #FF4B2B; --sun: #FFC21A; --cobalt: #2648FF; --mint: #1FCF8F; --bubblegum: #FF7AC6; --stone: #8C857A;
+  --display: "Archivo", ui-sans-serif, system-ui, sans-serif;
+  --body: ui-sans-serif, -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;
+}
+* { box-sizing: border-box; margin: 0; }
+html, body { width: 1200px; height: 630px; overflow: hidden; }
+body {
+  background: radial-gradient(circle, rgba(20,18,16,.10) 1.6px, transparent 2px) 0 0 / 28px 28px, var(--paper);
+  color: var(--ink); font-family: var(--display);
+  display: grid; grid-template-columns: 560px 1fr; column-gap: 44px; align-items: center;
+  padding: 56px 60px 56px 68px; position: relative;
+}
+.brand { display: flex; align-items: center; gap: 14px; font-weight: 900; font-size: 34px; letter-spacing: -0.02em; }
+.brand img { width: 56px; height: 56px; }
+h1 { font-weight: 900; font-size: 66px; line-height: 1.02; letter-spacing: -0.035em; margin: 28px 0 22px; white-space: nowrap; }
+h1 em { font-style: normal; background: var(--sun); padding: 0 .1em; border-radius: 14px; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
+p { font: 500 24px/1.32 var(--body); color: #2b2723; max-width: 22em; }
+.pills { display: flex; gap: 12px; margin-top: 26px; }
+.pill { font: 800 18px/1 var(--display); border: 2.5px solid var(--ink); border-radius: 999px; padding: 11px 18px; background: var(--surface); box-shadow: 3px 3px 0 var(--ink); }
+.pill.go { background: var(--tomato); }
+
+.stage { position: relative; height: 500px; border: 3px solid var(--ink); border-radius: 30px; background: var(--surface); box-shadow: 8px 8px 0 var(--ink); overflow: hidden; }
+.top { display: flex; justify-content: space-between; align-items: flex-end; padding: 22px 26px 18px; border-bottom: 3px solid var(--ink); background: var(--paper); }
+.counter { white-space: nowrap; font-weight: 900; font-size: 50px; line-height: .9; letter-spacing: -0.03em; }
+.counter small { display: block; font-size: 18px; letter-spacing: 0; margin-top: 8px; }
+.disk { width: 150px; font: 13px/1.25 var(--body); color: var(--muted); }
+.bar { height: 16px; border: 2.5px solid var(--ink); border-radius: 9px; overflow: hidden; background: var(--surface); margin-bottom: 7px; }
+.bar i { display: block; height: 100%; width: 70%; background: var(--sun); border-right: 2.5px solid var(--ink); }
+.card { position: absolute; width: 178px; padding: 12px 14px 13px; border: 2.5px solid var(--ink); border-radius: 18px; box-shadow: 4px 4px 0 var(--ink); }
+.card b { display: block; white-space: nowrap; font-weight: 900; font-size: 28px; line-height: 1; letter-spacing: -0.02em; }
+.card span { display: block; font: 600 14px/1.2 var(--body); margin-top: 6px; }
+.sun { background: var(--sun); } .cobalt { background: var(--cobalt); color: var(--paper); } .bubblegum { background: var(--bubblegum); } .mint { background: var(--mint); }
+.bin { position: absolute; right: 22px; bottom: 20px; width: 92px; }
+</style>
+</head>
+<body>
+  <div>
+    <div class="brand"><img src="../../site/img/icon.png" alt="">Dustpan</div>
+    <h1>Clear the clutter.<br><em>Keep the undo.</em></h1>
+    <p>A free Mac cleaner that explains every file in plain words and moves only what you approve to the Trash.</p>
+    <div class="pills"><span class="pill go">Free</span><span class="pill">macOS 14+</span><span class="pill">Open source</span></div>
+  </div>
+
+  <div class="stage">
+    <div class="top">
+      <div class="counter">18.4 GB<small>you can free</small></div>
+      <div class="disk"><div class="bar"><i></i></div>74.0 GB free of 245 GB</div>
+    </div>
+    <div class="card bubblegum" style="left:22px; top:150px; transform:rotate(-6deg)"><b>9.3 GB</b><span>Xcode DerivedData</span></div>
+    <div class="card bubblegum" style="left:224px; top:138px; transform:rotate(5deg)"><b>3.1 GB</b><span>iOS DeviceSupport</span></div>
+    <div class="card mint" style="left:118px; top:250px; transform:rotate(-3deg)"><b>1.4 GB</b><span>Old installers</span></div>
+    <div class="card sun" style="left:30px; top:358px; transform:rotate(3deg); width:160px"><b>24 MB</b><span>Saved window state</span></div>
+    <div class="card cobalt" style="left:206px; top:356px; transform:rotate(-4deg); width:150px"><b>412 MB</b><span>Logs</span></div>
+    <svg class="bin" viewBox="0 0 100 120" fill="none" stroke="#141210" stroke-width="5" stroke-linejoin="round" stroke-linecap="round">
+      <path d="M14 30h72l-8 82H22z" fill="#8C857A"/>
+      <path d="M8 22h84v10H8z" fill="#8C857A"/><path d="M38 22v-9h24v9" fill="#8C857A"/>
+      <path d="M36 46v52M50 46v52M64 46v52" stroke-width="4"/>
+      <circle cx="50" cy="58" r="15" fill="#F6F1E7"/>
+      <text x="50" y="65" text-anchor="middle" font-family="Archivo" font-weight="900" font-size="20" fill="#141210" stroke="none">0</text>
+    </svg>
+  </div>
+</body>
+</html>
